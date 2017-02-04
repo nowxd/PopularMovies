@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import org.nowxd.popularmovies.data.Movie;
+import org.nowxd.popularmovies.utils.JsonUtils;
 import org.nowxd.popularmovies.utils.NetworkUtils;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,23 +23,32 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    class MovieTask extends AsyncTask<String, Void, String> {
+    /**
+     * AsyncTask to fetch movies
+     */
+    class MovieTask extends AsyncTask<String, Void, Movie[]> {
 
         @Override
-        protected void onPostExecute(String jsonBody) {
+        protected void onPostExecute(Movie[] movies) {
 
-            if (jsonBody != null) {
-                Log.d(TAG, "onPostExecute: " + jsonBody);
+            if (movies == null) return;
+
+            for (Movie movie : movies) {
+
+                Log.d(TAG, "onPostExecute: " + movie);
+
             }
 
         }
 
         @Override
-        protected String doInBackground(String... strings) {
+        protected Movie[] doInBackground(String... strings) {
 
             String sortOrder = strings[0];
 
-            return NetworkUtils.requestSortedMovies(sortOrder, getString(R.string.api_key));
+            String jsonString = NetworkUtils.requestSortedMovies(sortOrder, getString(R.string.api_key));
+
+            return JsonUtils.processMovieJsonString(jsonString);
 
         }
     }
