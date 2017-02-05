@@ -1,9 +1,10 @@
 package org.nowxd.popularmovies;
 
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
 import org.nowxd.popularmovies.data.Movie;
 import org.nowxd.popularmovies.utils.JsonUtils;
@@ -13,10 +14,23 @@ public class MainActivity extends AppCompatActivity {
 
     private final String TAG = MainActivity.class.getSimpleName();
 
+    private RecyclerView recyclerView;
+    private MovieAdapter movieAdapter;
+    private RecyclerView.LayoutManager layoutManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        recyclerView = (RecyclerView) findViewById(R.id.rv_movie_list);
+        recyclerView.setHasFixedSize(true);
+
+        layoutManager = new GridLayoutManager(this, 2);
+        recyclerView.setLayoutManager(layoutManager);
+
+        movieAdapter = new MovieAdapter(this);
+        recyclerView.setAdapter(movieAdapter);
 
         MovieTask movieTask = new MovieTask();
         movieTask.execute("popular");
@@ -30,15 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Movie[] movies) {
-
-            if (movies == null) return;
-
-            for (Movie movie : movies) {
-
-                Log.d(TAG, "onPostExecute: " + movie);
-
-            }
-
+            movieAdapter.setMovieData(movies);
         }
 
         @Override
