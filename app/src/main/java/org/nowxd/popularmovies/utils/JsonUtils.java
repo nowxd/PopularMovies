@@ -11,16 +11,16 @@ public class JsonUtils {
 
     public static Movie[] processMovieJsonString(String jsonData) {
 
-        Movie[] res = null;
+        Movie[] movies = null;
 
         try {
 
             JSONArray jsonArray = new JSONObject(jsonData).getJSONArray(MOVIE_JSON_ARRAY_KEY);
-            res = new Movie[jsonArray.length()];
+            movies = new Movie[jsonArray.length()];
 
             for (int index = 0; index < jsonArray.length(); index++) {
 
-                res[index] = new Movie(jsonArray.getJSONObject(index));
+                movies[index] = new Movie(jsonArray.getJSONObject(index));
 
             }
 
@@ -28,7 +28,7 @@ public class JsonUtils {
             e.printStackTrace();
         }
 
-        return res;
+        return movies;
 
     }
 

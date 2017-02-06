@@ -18,18 +18,16 @@ public class NetworkUtils {
     private static final String QUERY_API_KEY = "api_key";
 
     // Request the list of movies by their sort order (popular or top_rated)
-    public static String requestSortedMovies(String sortOrder, String api_value) {
-
-        return retrieveApiResponse(buildMovieUrl(sortOrder, api_value));
-
+    public static String requestSortedMovies(String sortOrder, String apiKey) {
+        return retrieveApiResponse(buildMovieUrl(sortOrder, apiKey));
     }
 
-    private static URL buildMovieUrl(String sortOrder, String api_value) {
+    private static URL buildMovieUrl(String sortOrder, String apiKey) {
 
         Uri uri = Uri.parse(BASE_URL)
                 .buildUpon()
                 .appendPath(sortOrder)
-                .appendQueryParameter(QUERY_API_KEY, api_value)
+                .appendQueryParameter(QUERY_API_KEY, apiKey)
                 .build();
 
         URL url = null;
