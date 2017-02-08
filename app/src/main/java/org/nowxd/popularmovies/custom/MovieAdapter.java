@@ -3,15 +3,18 @@ package org.nowxd.popularmovies.custom;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
 import org.nowxd.popularmovies.R;
 import org.nowxd.popularmovies.data.Movie;
+import org.nowxd.popularmovies.utils.GridUtils;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder>{
 
@@ -31,6 +34,23 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.movie_grid_item, parent, false);
+
+        // Compute the width and height of a GridView item and set it as the view's layout_params
+        int parent_width = parent.getMeasuredWidth();
+
+        int columns = GridUtils.calculateNumberOfColumns(
+                context,
+                context.getResources().getDimension(R.dimen.movie_poster_width)
+        );
+
+        final double RATIO = context.getResources().getDimension(R.dimen.movie_poster_height) /
+                context.getResources().getDimension(R.dimen.movie_poster_width);
+
+        int width = parent_width / columns;
+        int height = (int) (width * RATIO);
+
+        RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(width, height);
+        view.setLayoutParams(params);
 
         return new MovieViewHolder(view);
 
@@ -73,6 +93,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         }
 
         void setPoster(String posterUrl) {
+
+//            Log.d(TAG, "setPoster: " + posterImageView.getWidth() + " : " + posterImageView.getHeight());
 
             Picasso.with(context)
                     .load(posterUrl)
