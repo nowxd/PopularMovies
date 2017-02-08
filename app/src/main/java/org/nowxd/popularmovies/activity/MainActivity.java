@@ -27,15 +27,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     private RecyclerView recyclerView;
     private MovieAdapter movieAdapter;
-    private RecyclerView.LayoutManager layoutManager;
 
-    /**
-     * Spinner Vars
-     */
     private int spinnerIndex;
-    private static final String SPINNER_KEY = "spinner_key";
-    private static final String[] SPINNER_TEXT_DISPLAY = {"Popular", "Top Rated"};
-    private static final String[] SPINNER_VALUES = {"popular", "top_rated"};
+
+    // Keeps track of the sort by values: popular, top_rated
+    private String[] sortByValues;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +41,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         recyclerView = (RecyclerView) findViewById(R.id.rv_movie_list);
         recyclerView.setHasFixedSize(true);
 
+        // Retrieve the height to calculate the number of columns
         float heightPx = getResources().getDimension(R.dimen.movie_poster_height);
-        layoutManager = new GridLayoutManager(this, GridUtils.calculateNumberOfColumns(getApplicationContext(), heightPx));
+
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(
+                this,
+                GridUtils.calculateNumberOfColumns(getApplicationContext(), heightPx)
+        );
         recyclerView.setLayoutManager(layoutManager);
 
         movieAdapter = new MovieAdapter(getApplicationContext(), this);
@@ -55,8 +56,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         if (savedInstanceState == null) {
             spinnerIndex = 0;
         } else {
-            spinnerIndex = savedInstanceState.getInt(SPINNER_KEY);
+            spinnerIndex = savedInstanceState.getInt(getString(R.string.spinner_key));
         }
+
+        sortByValues = getResources().getStringArray(R.array.sort_by_array);
 
         updateMovies();
 
@@ -85,7 +88,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         });
 
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, SPINNER_TEXT_DISPLAY);
+                new ArrayAdapter<>(
+                        this,
+                        R.layout.sort_by_spinner_item,
+                        getResources().getStringArray(R.array.spinner_text_display_array)
+                );
+
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
 
         spinner.setAdapter(adapter);
 
@@ -97,11 +106,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putInt(SPINNER_KEY, spinnerIndex);
+        outState.putInt(getString(R.string.spinner_key), spinnerIndex);
     }
 
     private void updateMovies() {
-        new MovieTask().execute(SPINNER_VALUES[spinnerIndex]);
+        new MovieTask().execute(sortByValues[spinnerIndex]);
     }
 
     /**

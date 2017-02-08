@@ -52,11 +52,16 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         notifyDataSetChanged();
     }
 
-    // Custom OnClickListener
+    /**
+     * OnClickListener
+     */
     public interface MoviePosterOnClickListener {
         void onMoviePosterClick(Movie movie);
     }
 
+    /**
+     * ViewHolder
+    */
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private ImageView posterImageView;

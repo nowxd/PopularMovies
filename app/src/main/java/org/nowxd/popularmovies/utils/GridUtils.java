@@ -13,12 +13,12 @@ public class GridUtils {
 
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
 
-        // 185 x 277 Ratio
+        // 185 width x 277 height Pixel Ratio
         float imageWidthPx = imageHeightPx * 185 / 277;
 
         float screenWidthPx = displayMetrics.widthPixels;
 
-        int numberOfColumns = Math.round(screenWidthPx / imageWidthPx);
+        int numberOfColumns = (int) (screenWidthPx / imageWidthPx);
 
         return numberOfColumns;
 
