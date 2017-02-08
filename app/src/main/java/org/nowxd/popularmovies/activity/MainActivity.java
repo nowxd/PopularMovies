@@ -1,10 +1,12 @@
-package org.nowxd.popularmovies;
+package org.nowxd.popularmovies.activity;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,13 +14,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import org.nowxd.popularmovies.R;
 import org.nowxd.popularmovies.custom.MovieAdapter;
 import org.nowxd.popularmovies.data.Movie;
 import org.nowxd.popularmovies.utils.GridUtils;
 import org.nowxd.popularmovies.utils.JsonUtils;
 import org.nowxd.popularmovies.utils.NetworkUtils;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MovieAdapter.MoviePosterOnClickListener {
 
     private final String TAG = MainActivity.class.getSimpleName();
 
@@ -43,10 +46,10 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
         float heightPx = getResources().getDimension(R.dimen.movie_poster_height);
-        layoutManager = new GridLayoutManager(this, GridUtils.calculateNumberOfColumns(this, heightPx));
+        layoutManager = new GridLayoutManager(this, GridUtils.calculateNumberOfColumns(getApplicationContext(), heightPx));
         recyclerView.setLayoutManager(layoutManager);
 
-        movieAdapter = new MovieAdapter(this);
+        movieAdapter = new MovieAdapter(getApplicationContext(), this);
         recyclerView.setAdapter(movieAdapter);
 
         if (savedInstanceState == null) {
@@ -99,6 +102,21 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateMovies() {
         new MovieTask().execute(SPINNER_VALUES[spinnerIndex]);
+    }
+
+    /**
+     * On movie poster click, start the movie detail activity
+     */
+    @Override
+    public void onMoviePosterClick(Movie movie) {
+
+        Class destination = MovieDetailActivity.class;
+
+        Intent intent = new Intent(getApplicationContext(), destination);
+        intent.putExtra(getString(R.string.parcelable_movie_key), movie);
+
+        startActivity(intent);
+
     }
 
     /**

@@ -19,9 +19,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     private Movie[] movieData;
     private Context context;
+    private MoviePosterOnClickListener onClickListener;
 
-    public MovieAdapter(Context context) {
+    public MovieAdapter(Context context, MoviePosterOnClickListener onClickListener) {
         this.context = context;
+        this.onClickListener = onClickListener;
     }
 
     @Override
@@ -50,13 +52,19 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         notifyDataSetChanged();
     }
 
-    class MovieViewHolder extends RecyclerView.ViewHolder {
+    // Custom OnClickListener
+    public interface MoviePosterOnClickListener {
+        void onMoviePosterClick(Movie movie);
+    }
+
+    class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private ImageView posterImageView;
 
         MovieViewHolder(View itemView) {
             super(itemView);
             posterImageView = (ImageView) itemView.findViewById(R.id.iv_movie_poster);
+            posterImageView.setOnClickListener(this);
         }
 
         void setPoster(String posterUrl) {
@@ -68,6 +76,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
         }
 
+        @Override
+        public void onClick(View view) {
+            onClickListener.onMoviePosterClick(movieData[getAdapterPosition()]);
+        }
     }
 
 }

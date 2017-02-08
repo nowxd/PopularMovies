@@ -18,7 +18,7 @@ public class GridUtils {
 
         float screenWidthPx = displayMetrics.widthPixels;
 
-        int numberOfColumns = (int) (screenWidthPx / imageWidthPx);
+        int numberOfColumns = Math.round(screenWidthPx / imageWidthPx);
 
         return numberOfColumns;
 

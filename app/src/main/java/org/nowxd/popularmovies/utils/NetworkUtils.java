@@ -17,7 +17,9 @@ public class NetworkUtils {
     private static final String BASE_URL = "https://api.themoviedb.org/3/movie/";
     private static final String QUERY_API_KEY = "api_key";
 
-    // Request the list of movies by their sort order (popular or top_rated)
+    /**
+     * Request the list of movies by their sort order (popular or top_rated)
+     */
     public static String requestSortedMovies(String sortOrder, String apiKey) {
         return retrieveApiResponse(buildMovieUrl(sortOrder, apiKey));
     }

@@ -2,6 +2,8 @@
     <string name="app_name">PopularMovies</string>
     <string name="menu_spinner_title">Sort Movies By Spinner</string>
 
+    <string name="parcelable_movie_key">pmk</string>
+
     <string-array name="sort_by_array">
         <item>popular</item>
         <item>top_rated</item>

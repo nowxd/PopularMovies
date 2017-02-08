@@ -9,6 +9,9 @@ public class JsonUtils {
 
     private static final String MOVIE_JSON_ARRAY_KEY = "results";
 
+    /**
+     * Convert the JSON string into an array of movies
+     */
     public static Movie[] processMovieJsonString(String jsonData) {
 
         Movie[] movies = null;
