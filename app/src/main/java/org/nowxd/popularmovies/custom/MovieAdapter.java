@@ -3,18 +3,15 @@ package org.nowxd.popularmovies.custom;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
 import org.nowxd.popularmovies.R;
 import org.nowxd.popularmovies.data.Movie;
-import org.nowxd.popularmovies.utils.GridUtils;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder>{
 
@@ -36,18 +33,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                 .inflate(R.layout.movie_grid_item, parent, false);
 
         // Compute the width and height of a GridView item and set it as the view's layout_params
-        int parent_width = parent.getMeasuredWidth();
+        float parentWidth = parent.getMeasuredWidth();
+        float posterHeight = context.getResources().getDimension(R.dimen.movie_poster_detail_height);
+        float posterWidth = context.getResources().getDimension(R.dimen.movie_poster_detail_width);
 
-        int columns = GridUtils.calculateNumberOfColumns(
-                context,
-                context.getResources().getDimension(R.dimen.movie_poster_width)
-        );
+        double ratio = posterHeight / posterWidth;
+        int columns = Math.max(2, (int) (parentWidth / posterWidth));
 
-        final double RATIO = context.getResources().getDimension(R.dimen.movie_poster_height) /
-                context.getResources().getDimension(R.dimen.movie_poster_width);
-
-        int width = parent_width / columns;
-        int height = (int) (width * RATIO);
+        int width = (int) parentWidth / columns;
+        int height = (int) (width * ratio);
 
         RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(width, height);
         view.setLayoutParams(params);
@@ -93,8 +87,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         }
 
         void setPoster(String posterUrl) {
-
-//            Log.d(TAG, "setPoster: " + posterImageView.getWidth() + " : " + posterImageView.getHeight());
 
             Picasso.with(context)
                     .load(posterUrl)

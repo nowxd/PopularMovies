@@ -8,7 +8,6 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     private MovieAdapter movieAdapter;
 
-    // Keeps track of the sort by values: popular, top_rated
+    // Keeps track of the sort-by values: popular, top_rated
     private String[] movieSortByValues;
     private int selectionIndex;
 
@@ -50,8 +49,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(
                 this,
                 // Calculate the number of columns needed for the GridView
-                GridUtils.calculateNumberOfColumns(getApplicationContext(),
-                        getResources().getDimension(R.dimen.movie_poster_width))
+                GridUtils.calculateNumberOfColumns(getApplicationContext())
         );
         recyclerView.setLayoutManager(layoutManager);
 

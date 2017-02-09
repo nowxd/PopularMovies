@@ -9,8 +9,8 @@
     <dimen name="movie_poster_height">277dp</dimen>
 
     <!-- Movie Detail -->
-    <dimen name="movie_poster_detail_width">250dp</dimen>
-    <dimen name="movie_poster_detail_height">380dp</dimen>
+    <dimen name="movie_poster_detail_width">200dp</dimen>
+    <dimen name="movie_poster_detail_height">300dp</dimen>
 
     <dimen name="movie_title_text_size">30sp</dimen>
     <dimen name="movie_detail_text_size">18sp</dimen>

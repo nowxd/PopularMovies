@@ -4,10 +4,6 @@
 
     <!-- Main Activity -->
 
-    <!--private static final String SPINNER_KEY = "spinner_key";-->
-    <!--private static final String[] SPINNER_TEXT_DISPLAY = {"Popular", "Top Rated"};-->
-    <!--private static final String[] SPINNER_VALUES = {"popular", "top_rated"};-->
-
     <string name="parcelable_movie_key">parc_movie_access_key</string>
     <string name="selection_index_key">sort_by_index</string>
 
@@ -24,7 +20,7 @@
     <!-- Movie Detail Activity -->
     <string name="title_placeholder">Movie Title</string>
     <string name="user_rating">User Rating: %1$.1f / 10</string>
-    <string name="release_date">Released: %1$s</string>
+    <string name="release_date">Release Date: %1$s</string>
     <string name="movie_plot">Plot:\n%1$s</string>
 
 </resources>

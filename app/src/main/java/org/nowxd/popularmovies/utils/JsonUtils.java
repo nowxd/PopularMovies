@@ -14,11 +14,14 @@ public class JsonUtils {
      */
     public static Movie[] processMovieJsonString(String jsonData) {
 
+        if (jsonData == null) return null;
+
         Movie[] movies = null;
 
         try {
 
             JSONArray jsonArray = new JSONObject(jsonData).getJSONArray(MOVIE_JSON_ARRAY_KEY);
+
             movies = new Movie[jsonArray.length()];
 
             for (int index = 0; index < jsonArray.length(); index++) {
