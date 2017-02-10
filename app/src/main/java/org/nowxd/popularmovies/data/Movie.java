@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Movie implements Parcelable{
+public class Movie implements Parcelable {
 
     /**
         original title

@@ -29,9 +29,12 @@ public class MovieDetailActivity extends AppCompatActivity {
         movieReleaseDateTextView = (TextView) findViewById(R.id.tv_release_date);
         moviePlotTextView = (TextView) findViewById(R.id.tv_movie_plot);
 
-        Movie movie = getIntent().getParcelableExtra(getString(R.string.parcelable_movie_key));
+        if (getIntent().hasExtra(getString(R.string.parcelable_movie_key))) {
 
-        setUpViews(movie);
+            Movie movie = getIntent().getParcelableExtra(getString(R.string.parcelable_movie_key));
+            setUpViews(movie);
+
+        }
 
     }
 

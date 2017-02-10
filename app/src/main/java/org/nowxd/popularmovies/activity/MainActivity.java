@@ -6,8 +6,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,8 +17,8 @@ import android.widget.Spinner;
 
 import org.nowxd.popularmovies.R;
 import org.nowxd.popularmovies.custom.MovieAdapter;
+import org.nowxd.popularmovies.custom.MoviePosterGridLayoutManager;
 import org.nowxd.popularmovies.data.Movie;
-import org.nowxd.popularmovies.utils.GridUtils;
 import org.nowxd.popularmovies.utils.JsonUtils;
 import org.nowxd.popularmovies.utils.NetworkUtils;
 
@@ -45,12 +45,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_movie_list);
         recyclerView.setHasFixedSize(true);
 
+        RecyclerView.LayoutManager layoutManager = new MoviePosterGridLayoutManager(this,
+                getResources().getDimension(R.dimen.movie_poster_width),
+                getResources().getDimension(R.dimen.movie_poster_height));
 
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(
-                this,
-                // Calculate the number of columns needed for the GridView
-                GridUtils.calculateNumberOfColumns(getApplicationContext())
-        );
         recyclerView.setLayoutManager(layoutManager);
 
         movieAdapter = new MovieAdapter(getApplicationContext(), this);

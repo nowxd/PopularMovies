@@ -2,6 +2,7 @@ package org.nowxd.popularmovies.custom;
 
 
 import android.content.Context;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,20 +32,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.movie_grid_item, parent, false);
-
-        // Compute the width and height of a GridView item and set it as the view's layout_params
-        float parentWidth = parent.getMeasuredWidth();
-        float posterHeight = context.getResources().getDimension(R.dimen.movie_poster_detail_height);
-        float posterWidth = context.getResources().getDimension(R.dimen.movie_poster_detail_width);
-
-        double ratio = posterHeight / posterWidth;
-        int columns = Math.max(2, (int) (parentWidth / posterWidth));
-
-        int width = (int) parentWidth / columns;
-        int height = (int) (width * ratio);
-
-        RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(width, height);
-        view.setLayoutParams(params);
 
         return new MovieViewHolder(view);
 

@@ -3,7 +3,6 @@
     <string name="menu_spinner_title">Sort Movies By Spinner</string>
 
     <!-- Main Activity -->
-
     <string name="parcelable_movie_key">parc_movie_access_key</string>
     <string name="selection_index_key">sort_by_index</string>
 
