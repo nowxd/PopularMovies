@@ -46,7 +46,7 @@ public class MoviePosterGridLayoutManager extends GridLayoutManager {
 
     public RecyclerView.LayoutParams generateCustomLayoutParams() {
 
-        // Compute the width and height of a GridView item dependent on the poster's dimensions and spanCount
+        // Compute the width and height of a GridView item using the total width and spanCount
         double ratio = moviePosterHeight / moviePosterWidth;
 
         int columns = getSpanCount();

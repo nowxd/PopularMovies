@@ -11,7 +11,7 @@ public class Movie implements Parcelable {
     /**
         original title
         movie poster image thumbnail
-        A plot synopsis (called plotSynopsis in the api)
+        A plot synopsis (called overview in the api)
         user rating (called vote_average in the api)
         release date
      */
@@ -123,7 +123,6 @@ public class Movie implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-
         parcel.writeString(title);
         parcel.writeString(posterImageUrl);
         parcel.writeString(plotSynopsis);

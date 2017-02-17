@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         recyclerView.setAdapter(movieAdapter);
 
         /**
-         * Movie sort by values and preferences setup
+         * Movie sort-by values and preferences setup
          */
         movieSortByValues = getResources().getStringArray(R.array.sort_by_array);
 
