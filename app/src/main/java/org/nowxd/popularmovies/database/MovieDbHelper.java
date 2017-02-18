@@ -30,7 +30,7 @@ public class MovieDbHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
 
         final String DELETE_TABLE_SQL = "DROP TABLE IF EXISTS " + MovieContract.MovieEntry.TABLE_NAME;
         sqLiteDatabase.execSQL(DELETE_TABLE_SQL);

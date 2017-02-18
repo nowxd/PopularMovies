@@ -23,6 +23,16 @@
                 android:value=".activity.MainActivity"/>
         </activity>
 
+
+        <provider
+            android:authorities="org.nowxd.popularmovies"
+            android:name="org.nowxd.popularmovies.database.MovieProvider"
+            android:exported="false"
+            />
+
+
+
     </application>
+
 
 </manifest>
