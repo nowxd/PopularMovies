@@ -17,8 +17,6 @@ public class MovieFireBaseJobService extends JobService {
     @Override
     public boolean onStartJob(JobParameters job) {
 
-        Log.d(TAG, "onStartJob: STARTING JOBS");
-
         movieTasks = new ArrayList<>();
 
         for (String sortType : sortTypes) {

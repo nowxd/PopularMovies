@@ -38,7 +38,7 @@ public class MoviePosterGridLayoutManager extends GridLayoutManager {
         this.totalWidth = getWidth() - getPaddingLeft() - getPaddingRight();
         int spanCount = Math.max(2, (int) (totalWidth / moviePosterWidth));
 
-//        Log.d(TAG, "onLayoutChildren: TOTAL WIDTH: " + totalWidth);
+//        Log.d(TAG, "onLayoutChildren: " + getWidth());
 
         setSpanCount(spanCount);
 
@@ -46,7 +46,7 @@ public class MoviePosterGridLayoutManager extends GridLayoutManager {
 
     }
 
-    public RecyclerView.LayoutParams generateCustomLayoutParams() {
+    private RecyclerView.LayoutParams generateCustomLayoutParams() {
 
         // Compute the width and height of a GridView item using the total width and spanCount
         double ratio = moviePosterHeight / moviePosterWidth;
@@ -74,5 +74,6 @@ public class MoviePosterGridLayoutManager extends GridLayoutManager {
     public RecyclerView.LayoutParams generateLayoutParams(ViewGroup.LayoutParams lp) {
         return generateCustomLayoutParams();
     }
+
 
 }

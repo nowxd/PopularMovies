@@ -39,10 +39,8 @@ public class MovieTask extends AsyncTask<String, Void, Movie[]> {
 
     @Override
     protected void onPostExecute(Movie[] movies) {
-
         // Update the entries in the database
         DatabaseUtils.updateMovieDatabase(context, movies, sortType);
-
     }
 
 }

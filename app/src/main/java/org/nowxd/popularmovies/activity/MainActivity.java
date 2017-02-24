@@ -18,17 +18,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import com.firebase.jobdispatcher.FirebaseJobDispatcher;
-import com.firebase.jobdispatcher.GooglePlayDriver;
-import com.firebase.jobdispatcher.Job;
-
 import org.nowxd.popularmovies.R;
 import org.nowxd.popularmovies.custom.MovieAdapter;
 import org.nowxd.popularmovies.custom.MoviePosterGridLayoutManager;
 import org.nowxd.popularmovies.data.Movie;
 import org.nowxd.popularmovies.database.MovieContract;
-import org.nowxd.popularmovies.sync.MovieFireBaseJobService;
-import org.nowxd.popularmovies.sync.MovieTask;
+import org.nowxd.popularmovies.utils.SyncUtils;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MoviePosterOnClickListener,
         LoaderManager.LoaderCallbacks<Cursor> {
@@ -74,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         selectionIndex = preferences.getInt(getString(R.string.selection_index_key), 0);
 
-        initFireBaseDispatcher();
+        SyncUtils.scheduleMovieSyncJob(this);
 
         // Loader
         getSupportLoaderManager().initLoader(LOADER_ID, null, this);
@@ -139,28 +134,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     }
 
     /**
-     * TODO Dispatcher not working atm, fix it so we don't have to manually execute the updates
-     */
-    private void initFireBaseDispatcher() {
-
-        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(getApplicationContext()));
-
-        Job syncMoviesJob = dispatcher.newJobBuilder()
-                .setService(MovieFireBaseJobService.class)
-                .setTag("moviesApiCall")
-                .build();
-
-        dispatcher.schedule(syncMoviesJob);
-
-        MovieTask movieTask1 = new MovieTask(getApplicationContext());
-        MovieTask movieTask2 = new MovieTask(getApplicationContext());
-
-        movieTask1.execute("popular");
-        movieTask2.execute("top_rated");
-
-    }
-
-    /**
      * On a movie poster click, start the movie detail activity
      */
     @Override
@@ -175,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     }
 
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
@@ -182,8 +156,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         String whereClause = MovieContract.MovieEntry.COLUMN_SORT_TYPE + "=?";
         String[] whereArgs = {sortType};
-
-//        String sortBy =
 
         return new CursorLoader(this, MovieContract.MovieEntry.CONTENT_URI, null, whereClause,
                 whereArgs, null);
