@@ -17,6 +17,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    def keystorePropertiesFile = rootProject.file("keystore.properties")
+    def keystoreProperties = new Properties()
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+    buildTypes.each {
+        it.buildConfigField 'String', 'MOVIE_API_KEY', keystoreProperties['MOVIE_API_KEY']
+    }
+
 }
 
 repositories {
@@ -33,6 +42,8 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.1.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
     compile 'com.android.support:percent:25.1.1'
+
+    compile 'com.firebase:firebase-jobdispatcher:0.5.2'
 
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
     compile 'com.squareup.picasso:picasso:2.5.2'

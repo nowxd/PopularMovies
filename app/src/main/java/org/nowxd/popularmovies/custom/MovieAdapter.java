@@ -2,6 +2,7 @@ package org.nowxd.popularmovies.custom;
 
 
 import android.content.Context;
+import android.database.Cursor;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,12 +14,14 @@ import com.squareup.picasso.Picasso;
 
 import org.nowxd.popularmovies.R;
 import org.nowxd.popularmovies.data.Movie;
+import org.nowxd.popularmovies.database.MovieContract;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder>{
 
     private final String TAG = MovieAdapter.class.getSimpleName();
 
-    private Movie[] movieData;
+    private Cursor movieCursor;
+
     private Context context;
     private MoviePosterOnClickListener onClickListener;
 
@@ -39,18 +42,31 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
-        holder.setPoster(movieData[position].getPosterImageUrl());
+
+        movieCursor.moveToPosition(position);
+
+        int posterIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_IMAGE_URL);
+        String posterImageUrl = movieCursor.getString(posterIndex);
+
+        holder.setPoster(posterImageUrl);
+
     }
 
     @Override
     public int getItemCount() {
-        if (movieData == null) return 0;
-        return movieData.length;
+        if (movieCursor == null) return 0;
+        return movieCursor.getCount();
     }
 
-    public void setMovieData(Movie[] movieData) {
-        this.movieData = movieData;
+    public void swapCursor(Cursor newCursor) {
+
+        if (movieCursor != null) {
+            movieCursor.close();
+        }
+
+        movieCursor = newCursor;
         notifyDataSetChanged();
+
     }
 
     /**
@@ -84,7 +100,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
         @Override
         public void onClick(View view) {
-            onClickListener.onMoviePosterClick(movieData[getAdapterPosition()]);
+            // TODO change Detail View to use a cursor and not a POJO
+//            onClickListener.onMoviePosterClick(movieData[getAdapterPosition()]);
         }
     }
 

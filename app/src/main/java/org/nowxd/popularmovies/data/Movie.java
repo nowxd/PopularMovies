@@ -1,10 +1,12 @@
 package org.nowxd.popularmovies.data;
 
+import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.nowxd.popularmovies.database.MovieContract;
 
 public class Movie implements Parcelable {
 
@@ -42,6 +44,21 @@ public class Movie implements Parcelable {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+    }
+
+    public ContentValues toContentValues(String sortType) {
+
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(MovieContract.MovieEntry.COLUMN_TITLE, this.title);
+        contentValues.put(MovieContract.MovieEntry.COLUMN_IMAGE_URL, this.getPosterImageUrl());
+        contentValues.put(MovieContract.MovieEntry.COLUMN_PLOT, this.getPlotSynopsis());
+        contentValues.put(MovieContract.MovieEntry.COLUMN_USER_RATING, this.getUserRating());
+        contentValues.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, this.getReleaseDate());
+        contentValues.put(MovieContract.MovieEntry.COLUMN_SORT_TYPE, sortType);
+
+        return contentValues;
 
     }
 

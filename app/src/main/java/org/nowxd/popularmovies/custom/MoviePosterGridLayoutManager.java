@@ -38,6 +38,8 @@ public class MoviePosterGridLayoutManager extends GridLayoutManager {
         this.totalWidth = getWidth() - getPaddingLeft() - getPaddingRight();
         int spanCount = Math.max(2, (int) (totalWidth / moviePosterWidth));
 
+//        Log.d(TAG, "onLayoutChildren: TOTAL WIDTH: " + totalWidth);
+
         setSpanCount(spanCount);
 
         super.onLayoutChildren(recycler, state);

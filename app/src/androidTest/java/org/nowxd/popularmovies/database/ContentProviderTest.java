@@ -23,10 +23,9 @@ public class ContentProviderTest {
 
     @Before
     public void setup() {
-
         context = InstrumentationRegistry.getTargetContext();
+        // Wipe the table
         context.getContentResolver().delete(MovieContract.MovieEntry.CONTENT_URI, null, null);
-
     }
 
     @Test
@@ -38,6 +37,7 @@ public class ContentProviderTest {
         final String MOVIE_PLOT = "hmm";
         final double MOVIE_RATING = 5.5;
         final String MOVIE_RELEASE_DATE = "1/1/2017";
+        final String MOVIE_SORT_TYPE = "popular";
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(MovieContract.MovieEntry.COLUMN_TITLE, MOVIE_TITLE);
@@ -45,6 +45,7 @@ public class ContentProviderTest {
         contentValues.put(MovieContract.MovieEntry.COLUMN_PLOT, MOVIE_PLOT);
         contentValues.put(MovieContract.MovieEntry.COLUMN_USER_RATING, MOVIE_RATING);
         contentValues.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, MOVIE_RELEASE_DATE);
+        contentValues.put(MovieContract.MovieEntry.COLUMN_SORT_TYPE, MOVIE_SORT_TYPE);
 
         Uri uri = context.getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues);
 
@@ -75,6 +76,7 @@ public class ContentProviderTest {
         int plotIndex = cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_PLOT);
         int ratingIndex = cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_USER_RATING);
         int dateIndex = cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_RELEASE_DATE);
+        int sortIndex = cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_SORT_TYPE);
 
         // Assert all the values matches with what we inserted
         Assert.assertEquals(cursor.getLong(idIndex), id);
@@ -84,6 +86,7 @@ public class ContentProviderTest {
         Assert.assertEquals(cursor.getString(dateIndex), MOVIE_RELEASE_DATE);
         double eps = 1e-10;
         Assert.assertEquals(cursor.getDouble(ratingIndex), MOVIE_RATING, eps);
+        Assert.assertEquals(cursor.getString(sortIndex), MOVIE_SORT_TYPE);
 
         cursor.close();
 

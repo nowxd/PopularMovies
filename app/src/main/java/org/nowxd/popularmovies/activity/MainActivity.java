@@ -2,9 +2,12 @@ package org.nowxd.popularmovies.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,16 +18,24 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.GooglePlayDriver;
+import com.firebase.jobdispatcher.Job;
+
 import org.nowxd.popularmovies.R;
 import org.nowxd.popularmovies.custom.MovieAdapter;
 import org.nowxd.popularmovies.custom.MoviePosterGridLayoutManager;
 import org.nowxd.popularmovies.data.Movie;
-import org.nowxd.popularmovies.utils.JsonUtils;
-import org.nowxd.popularmovies.utils.NetworkUtils;
+import org.nowxd.popularmovies.database.MovieContract;
+import org.nowxd.popularmovies.sync.MovieFireBaseJobService;
+import org.nowxd.popularmovies.sync.MovieTask;
 
-public class MainActivity extends AppCompatActivity implements MovieAdapter.MoviePosterOnClickListener {
+public class MainActivity extends AppCompatActivity implements MovieAdapter.MoviePosterOnClickListener,
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     private final String TAG = MainActivity.class.getSimpleName();
+
+    private final int LOADER_ID = 0;
 
     private MovieAdapter movieAdapter;
 
@@ -63,7 +74,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         selectionIndex = preferences.getInt(getString(R.string.selection_index_key), 0);
 
-        updateMovies();
+        initFireBaseDispatcher();
+
+        // Loader
+        getSupportLoaderManager().initLoader(LOADER_ID, null, this);
 
     }
 
@@ -97,8 +111,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
                 // Update
-                selectionIndex = i;
-                updateMovies();
+                updateSelection(i);
 
                 // Save to preferences
                 SharedPreferences.Editor editor = preferences.edit();
@@ -117,8 +130,34 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     }
 
-    private void updateMovies() {
-        new MovieTask().execute(movieSortByValues[selectionIndex]);
+    // Called when the spinner index has changed
+    private void updateSelection(int newSelectionIndex) {
+
+        selectionIndex = newSelectionIndex;
+        getSupportLoaderManager().restartLoader(LOADER_ID, null, this);
+
+    }
+
+    /**
+     * TODO Dispatcher not working atm, fix it so we don't have to manually execute the updates
+     */
+    private void initFireBaseDispatcher() {
+
+        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(getApplicationContext()));
+
+        Job syncMoviesJob = dispatcher.newJobBuilder()
+                .setService(MovieFireBaseJobService.class)
+                .setTag("moviesApiCall")
+                .build();
+
+        dispatcher.schedule(syncMoviesJob);
+
+        MovieTask movieTask1 = new MovieTask(getApplicationContext());
+        MovieTask movieTask2 = new MovieTask(getApplicationContext());
+
+        movieTask1.execute("popular");
+        movieTask2.execute("top_rated");
+
     }
 
     /**
@@ -136,25 +175,28 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     }
 
-    /**
-     * AsyncTask to fetch movies
-     */
-    class MovieTask extends AsyncTask<String, Void, Movie[]> {
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-        @Override
-        protected void onPostExecute(Movie[] movies) {
-            movieAdapter.setMovieData(movies);
-        }
+        String sortType = movieSortByValues[selectionIndex];
 
-        @Override
-        protected Movie[] doInBackground(String... strings) {
+        String whereClause = MovieContract.MovieEntry.COLUMN_SORT_TYPE + "=?";
+        String[] whereArgs = {sortType};
 
-            String sortOrder = strings[0];
+//        String sortBy =
 
-            String jsonString = NetworkUtils.requestSortedMovies(sortOrder, getString(R.string.api_key));
+        return new CursorLoader(this, MovieContract.MovieEntry.CONTENT_URI, null, whereClause,
+                whereArgs, null);
 
-            return JsonUtils.processMovieJsonString(jsonString);
+    }
 
-        }
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        movieAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        movieAdapter.swapCursor(null);
     }
 }
