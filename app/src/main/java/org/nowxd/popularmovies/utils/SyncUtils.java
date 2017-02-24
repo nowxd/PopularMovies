@@ -19,6 +19,10 @@ public class SyncUtils {
 
     private static final String JOB_TAG = "movies_api_call";
 
+    private static final int START_WINDOW = 0;
+    private static final int DELTA_WINDOW = 50;
+    private static final int END_WINDOW = START_WINDOW + DELTA_WINDOW;
+
     public synchronized static void scheduleMovieSyncJob(Context context) {
 
         FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
@@ -28,7 +32,7 @@ public class SyncUtils {
                 .setTag(JOB_TAG)
                 .setConstraints(Constraint.ON_ANY_NETWORK)
                 .setLifetime(Lifetime.FOREVER)
-                .setTrigger(Trigger.executionWindow(10, 60))
+                .setTrigger(Trigger.executionWindow(START_WINDOW, END_WINDOW))
                 .setRecurring(true)
                 .setReplaceCurrent(true)
                 .setRetryStrategy(RetryStrategy.DEFAULT_EXPONENTIAL)

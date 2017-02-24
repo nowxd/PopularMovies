@@ -6,7 +6,8 @@
 
     <!-- Poster -->
     <dimen name="movie_poster_width">185dp</dimen>
-    <dimen name="movie_poster_height">277dp</dimen>
+    <!--Actual: 277-->
+    <dimen name="movie_poster_height">300dp</dimen>
 
     <!-- Movie Detail -->
     <dimen name="movie_poster_detail_width">200dp</dimen>
