@@ -4,6 +4,7 @@
 
     <!-- Main Activity Keys-->
     <string name="parcelable_movie_key" translatable="false">parc_movie_access_key</string>
+    <string name="movie_id_intent_key" translatable="false">movie_id_key</string>
     <string name="selection_index_key" translatable="false">sort_by_index</string>
 
     <string-array name="spinner_text_display_array">

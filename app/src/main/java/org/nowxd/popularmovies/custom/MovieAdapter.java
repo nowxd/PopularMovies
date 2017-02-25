@@ -59,21 +59,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     public void swapCursor(Cursor newCursor) {
-
-        if (movieCursor != null) {
-            movieCursor.close();
-        }
-
         movieCursor = newCursor;
         notifyDataSetChanged();
-
     }
 
     /**
      * OnClickListener
      */
     public interface MoviePosterOnClickListener {
-        void onMoviePosterClick(Movie movie);
+        void onMoviePosterClick(long movieID);
     }
 
     /**
@@ -100,8 +94,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
         @Override
         public void onClick(View view) {
-            // TODO change Detail View to use a cursor and not a POJO
-//            onClickListener.onMoviePosterClick(movieData[getAdapterPosition()]);
+
+            movieCursor.moveToPosition(getAdapterPosition());
+
+            // Retrieve the ID
+            int idIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry._ID);
+            long movieID = movieCursor.getLong(idIndex);
+
+            onClickListener.onMoviePosterClick(movieID);
+
         }
     }
 

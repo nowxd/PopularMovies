@@ -60,6 +60,7 @@ public class ContentProviderTest {
                 MovieContract.MovieEntry.COLUMN_PLOT,
                 MovieContract.MovieEntry.COLUMN_USER_RATING,
                 MovieContract.MovieEntry.COLUMN_RELEASE_DATE,
+                MovieContract.MovieEntry.COLUMN_SORT_TYPE
         };
 
         Cursor cursor = context.getContentResolver().query(

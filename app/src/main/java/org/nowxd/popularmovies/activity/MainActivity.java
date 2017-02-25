@@ -137,12 +137,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
      * On a movie poster click, start the movie detail activity
      */
     @Override
-    public void onMoviePosterClick(Movie movie) {
+    public void onMoviePosterClick(long movieID) {
 
         Class destination = MovieDetailActivity.class;
 
         Intent intent = new Intent(getApplicationContext(), destination);
-        intent.putExtra(getString(R.string.parcelable_movie_key), movie);
+        intent.putExtra(getString(R.string.movie_id_intent_key), movieID);
 
         startActivity(intent);
 
