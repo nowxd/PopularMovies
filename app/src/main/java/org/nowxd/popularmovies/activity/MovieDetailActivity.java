@@ -72,10 +72,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         Cursor cursor = getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI, projection,
                 whereClause, whereArgs, null);
 
-
-        if (cursor != null) {
-            cursor.moveToFirst();
-        }
+        cursor.moveToFirst();
 
         return cursor;
 

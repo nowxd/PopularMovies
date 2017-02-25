@@ -1,7 +1,6 @@
 package org.nowxd.popularmovies.utils;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
@@ -11,7 +10,7 @@ import com.firebase.jobdispatcher.Lifetime;
 import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
 
-import org.nowxd.popularmovies.sync.MovieFireBaseJobService;
+import org.nowxd.popularmovies.network.MovieFireBaseJobService;
 
 public class SyncUtils {
 

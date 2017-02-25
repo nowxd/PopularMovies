@@ -21,7 +21,7 @@ public class Review {
     private static final String CONTENT_KEY = "content";
     private static final String URL_KEY = "url";
 
-    private static final int MAX_CONTENT_LEN = 200;
+    private static final int MAX_CONTENT_LEN = 300;
 
     public Review(JSONObject jsonObject) {
 
@@ -67,5 +67,14 @@ public class Review {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @Override
+    public String toString() {
+        return "Review{" +
+                "author='" + author + '\'' +
+                ", content='" + content + '\'' +
+                ", url='" + url + '\'' +
+                '}';
     }
 }

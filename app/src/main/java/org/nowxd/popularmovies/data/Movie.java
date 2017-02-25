@@ -18,6 +18,7 @@ public class Movie implements Parcelable {
         release date
      */
 
+    // TODO Retrieve Movie API ID and popularity (sort by) as well
     private String title;
     private String posterImageUrl;
     private String plotSynopsis;

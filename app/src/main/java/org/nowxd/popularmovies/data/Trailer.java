@@ -85,4 +85,14 @@ public class Trailer {
     public void setType(String type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "Trailer{" +
+                "videoKey='" + videoKey + '\'' +
+                ", name='" + name + '\'' +
+                ", site='" + site + '\'' +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }

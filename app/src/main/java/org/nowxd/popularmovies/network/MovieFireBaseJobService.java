@@ -1,6 +1,4 @@
-package org.nowxd.popularmovies.sync;
-
-import android.util.Log;
+package org.nowxd.popularmovies.network;
 
 import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;

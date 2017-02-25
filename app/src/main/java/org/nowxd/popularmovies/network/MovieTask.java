@@ -1,4 +1,4 @@
-package org.nowxd.popularmovies.sync;
+package org.nowxd.popularmovies.network;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -27,7 +27,7 @@ public class MovieTask extends AsyncTask<String, Void, Movie[]> {
     @Override
     protected Movie[] doInBackground(String... strings) {
 
-        Log.d(TAG, "doInBackground: STARTING TASK");
+        Log.d(TAG, "doInBackground: STARTING MOVIE API CALL");
 
         this.sortType = strings[0];
 
