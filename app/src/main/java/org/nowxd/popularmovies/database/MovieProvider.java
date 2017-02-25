@@ -104,7 +104,7 @@ public class MovieProvider extends ContentProvider {
 
         int deleteCount;
 
-        boolean notifyDelete = true;
+//        boolean notifyDelete = true;
 
         switch (match) {
 
@@ -112,9 +112,9 @@ public class MovieProvider extends ContentProvider {
 
                 deleteCount = db.delete(MovieContract.MovieEntry.TABLE_NAME, where, whereArgs);
 
-                // Avoid notifying change when deleting movies, since the successive insert will call
-                // notify change
-                notifyDelete = false;
+//                // Avoid notifying change when deleting movies, since the successive insert will call
+//                // notify change
+//                notifyDelete = false;
 
                 break;
 
@@ -123,7 +123,7 @@ public class MovieProvider extends ContentProvider {
 
         }
 
-        if (notifyDelete && getContext() != null && deleteCount > 0) {
+        if (getContext() != null && deleteCount > 0) {
             getContext().getContentResolver().notifyChange(uri, null);
         }
 

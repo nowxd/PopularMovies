@@ -15,6 +15,10 @@ public class NetworkUtils {
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
     private static final String BASE_URL = "https://api.themoviedb.org/3/movie/";
+
+    private static final String VIDEO_PATH = "videos";
+    private static final String REVIEW_PATH = "reviews";
+
     private static final String QUERY_API_KEY = "api_key";
 
     /**
@@ -31,6 +35,46 @@ public class NetworkUtils {
                 .appendPath(sortOrder)
                 .appendQueryParameter(QUERY_API_KEY, apiKey)
                 .build();
+
+        return buildUrl(uri);
+
+    }
+
+    public static String requestMovieTrailers(String movieApiId, String apiKey) {
+        return retrieveApiResponse(buildTrailerUrl(movieApiId, apiKey));
+    }
+
+    private static URL buildTrailerUrl(String movieApiId, String apiKey) {
+
+        Uri uri = Uri.parse(BASE_URL)
+                .buildUpon()
+                .appendPath(movieApiId)
+                .appendPath(VIDEO_PATH)
+                .appendQueryParameter(QUERY_API_KEY, apiKey)
+                .build();
+
+        return buildUrl(uri);
+
+    }
+
+    public static String requestMovieReviews(String movieApiId, String apiKey) {
+        return retrieveApiResponse(buildReviewUrl(movieApiId, apiKey));
+    }
+
+    private static URL buildReviewUrl(String movieApiId, String apiKey) {
+
+        Uri uri = Uri.parse(BASE_URL)
+                .buildUpon()
+                .appendPath(movieApiId)
+                .appendPath(REVIEW_PATH)
+                .appendQueryParameter(QUERY_API_KEY, apiKey)
+                .build();
+
+        return buildUrl(uri);
+
+    }
+
+    private static URL buildUrl(Uri uri) {
 
         URL url = null;
 
@@ -68,6 +112,5 @@ public class NetworkUtils {
         return responseBody;
 
     }
-
 
 }

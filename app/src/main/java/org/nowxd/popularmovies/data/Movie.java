@@ -23,6 +23,7 @@ public class Movie implements Parcelable {
     private String plotSynopsis;
     private double userRating;
     private String releaseDate;
+//    private String apiId;
 
     // JSON keys
     private static final String TITLE_KEY = "title";

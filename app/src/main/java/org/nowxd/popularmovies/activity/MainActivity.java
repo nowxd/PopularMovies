@@ -148,7 +148,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     }
 
-
+    /**
+     * CursorLoader methods
+     */
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
