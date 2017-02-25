@@ -112,8 +112,8 @@ public class MovieProvider extends ContentProvider {
 
                 deleteCount = db.delete(MovieContract.MovieEntry.TABLE_NAME, where, whereArgs);
 
-                // Avoid notifying change when deleting movies, since the successive update will call
-                // the update change
+                // Avoid notifying change when deleting movies, since the successive insert will call
+                // notify change
                 notifyDelete = false;
 
                 break;
