@@ -104,18 +104,11 @@ public class MovieProvider extends ContentProvider {
 
         int deleteCount;
 
-//        boolean notifyDelete = true;
-
         switch (match) {
 
             case MOVIE:
 
                 deleteCount = db.delete(MovieContract.MovieEntry.TABLE_NAME, where, whereArgs);
-
-//                // Avoid notifying change when deleting movies, since the successive insert will call
-//                // notify change
-//                notifyDelete = false;
-
                 break;
 
             default:
@@ -208,6 +201,7 @@ public class MovieProvider extends ContentProvider {
         }
 
         return insertCount;
+
     }
 
 }

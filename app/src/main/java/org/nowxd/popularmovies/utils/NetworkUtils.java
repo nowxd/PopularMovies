@@ -40,6 +40,9 @@ public class NetworkUtils {
 
     }
 
+    /**
+     * Trailers
+     */
     public static String requestMovieTrailers(String movieApiId, String apiKey) {
         return retrieveApiResponse(buildTrailerUrl(movieApiId, apiKey));
     }
@@ -57,6 +60,9 @@ public class NetworkUtils {
 
     }
 
+    /**
+     * Reviews
+     */
     public static String requestMovieReviews(String movieApiId, String apiKey) {
         return retrieveApiResponse(buildReviewUrl(movieApiId, apiKey));
     }

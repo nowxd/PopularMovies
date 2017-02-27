@@ -18,10 +18,12 @@ public class MovieDbHelper extends SQLiteOpenHelper {
 
         final String CREATE_MOVIE_TABLE_SQL = "CREATE TABLE " + MovieContract.MovieEntry.TABLE_NAME + " (" +
                 MovieContract.MovieEntry._ID + " INTEGER PRIMARY KEY, " +
+                MovieContract.MovieEntry.COLUMN_API_ID + " TEXT UNIQUE NOT NULL," +
                 MovieContract.MovieEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
                 MovieContract.MovieEntry.COLUMN_IMAGE_URL + " TEXT NOT NULL, " +
                 MovieContract.MovieEntry.COLUMN_PLOT + " TEXT NOT NULL, " +
                 MovieContract.MovieEntry.COLUMN_USER_RATING + " REAL NOT NULL, " +
+                MovieContract.MovieEntry.COLUMN_POPULARITY + " REAL NOT NULL, " +
                 MovieContract.MovieEntry.COLUMN_RELEASE_DATE + " TEXT NOT NULL, " +
                 MovieContract.MovieEntry.COLUMN_SORT_TYPE + " TEXT NOT NULL" +
                 ");";

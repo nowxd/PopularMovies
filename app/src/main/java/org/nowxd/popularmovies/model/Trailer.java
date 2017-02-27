@@ -1,4 +1,4 @@
-package org.nowxd.popularmovies.data;
+package org.nowxd.popularmovies.model;
 
 import org.json.JSONException;
 import org.json.JSONObject;

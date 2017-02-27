@@ -3,9 +3,9 @@ package org.nowxd.popularmovies.utils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.nowxd.popularmovies.data.Movie;
-import org.nowxd.popularmovies.data.Review;
-import org.nowxd.popularmovies.data.Trailer;
+import org.nowxd.popularmovies.model.Movie;
+import org.nowxd.popularmovies.model.Review;
+import org.nowxd.popularmovies.model.Trailer;
 
 import java.util.ArrayList;
 

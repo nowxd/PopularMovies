@@ -19,7 +19,7 @@ public class SyncUtils {
     private static final String JOB_TAG = "movies_api_call";
 
     private static final int START_WINDOW_SECONDS = 0;
-    private static final int DELTA_WINDOW_SECONDS = 10;
+    private static final int DELTA_WINDOW_SECONDS = 5;
     private static final int END_WINDOW_SECONDS = START_WINDOW_SECONDS + DELTA_WINDOW_SECONDS;
 
     public synchronized static void scheduleMovieSyncJob(Context context) {
@@ -32,8 +32,8 @@ public class SyncUtils {
                 .setConstraints(Constraint.ON_ANY_NETWORK)
                 .setLifetime(Lifetime.UNTIL_NEXT_BOOT)
                 .setTrigger(Trigger.executionWindow(START_WINDOW_SECONDS, END_WINDOW_SECONDS))
-                .setRecurring(false)
-                .setReplaceCurrent(false)
+                .setRecurring(true)
+                .setReplaceCurrent(true)
                 .setRetryStrategy(RetryStrategy.DEFAULT_EXPONENTIAL)
                 .build();
 

@@ -1,18 +1,28 @@
 package org.nowxd.popularmovies.activity;
 
 import android.database.Cursor;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 import org.nowxd.popularmovies.R;
-import org.nowxd.popularmovies.data.Movie;
+import org.nowxd.popularmovies.custom.TrailerAdapter;
 import org.nowxd.popularmovies.database.MovieContract;
+import org.nowxd.popularmovies.model.Trailer;
+import org.nowxd.popularmovies.network.TrailerTaskLoader;
 
-public class MovieDetailActivity extends AppCompatActivity {
+public class MovieDetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Trailer[]>{
+
+    private static final String TAG = MovieDetailActivity.class.getSimpleName();
 
     private TextView movieTitleTextView;
     private ImageView moviePosterImageView;
@@ -21,6 +31,11 @@ public class MovieDetailActivity extends AppCompatActivity {
     private TextView moviePlotTextView;
 
     private Cursor movieCursor;
+
+    private TrailerAdapter trailerAdapter;
+
+    private int TRAILER_LOADER_ID = 1;
+    private int REVIEW_LOADER_ID = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +58,9 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         }
 
+        setupRecyclerViews();
+        setupLoaders();
+
     }
 
     @Override
@@ -55,6 +73,24 @@ public class MovieDetailActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    private void setupRecyclerViews() {
+
+        RecyclerView trailerRecyclerView = (RecyclerView) findViewById(R.id.rv_trailer_list);
+
+        RecyclerView.LayoutManager trailerLayoutManager = new LinearLayoutManager(this);
+        trailerRecyclerView.setLayoutManager(trailerLayoutManager);
+
+        trailerAdapter = new TrailerAdapter();
+        trailerRecyclerView.setAdapter(trailerAdapter);
+
+    }
+
+    private void setupLoaders() {
+
+        getSupportLoaderManager().initLoader(TRAILER_LOADER_ID, null, this);
+
+    }
+
     private Cursor initCursor(long movieID) {
 
         String whereClause = MovieContract.MovieEntry._ID + "=?";
@@ -62,6 +98,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         String[] projection = {
                 MovieContract.MovieEntry._ID,
+                MovieContract.MovieEntry.COLUMN_API_ID,
                 MovieContract.MovieEntry.COLUMN_TITLE,
                 MovieContract.MovieEntry.COLUMN_IMAGE_URL,
                 MovieContract.MovieEntry.COLUMN_PLOT,
@@ -80,7 +117,6 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     private void setUpViews() {
 
-//        int idIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry._ID);
         int titleIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_TITLE);
         int imgIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_IMAGE_URL);
         int plotIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_PLOT);
@@ -117,4 +153,28 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Trailer Loader
+     */
+    @Override
+    public Loader<Trailer[]> onCreateLoader(int id, Bundle args) {
+
+        int idIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_API_ID);
+        String movieId = movieCursor.getString(idIndex);
+
+        TrailerTaskLoader loader = new TrailerTaskLoader(this, movieId);
+        loader.forceLoad();
+
+        return loader;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Trailer[]> loader, Trailer[] data) {
+        trailerAdapter.setTrailers(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Trailer[]> loader) {
+        trailerAdapter.setTrailers(null);
+    }
 }

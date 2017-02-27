@@ -10,7 +10,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +20,6 @@ import android.widget.Spinner;
 import org.nowxd.popularmovies.R;
 import org.nowxd.popularmovies.custom.MovieAdapter;
 import org.nowxd.popularmovies.custom.MoviePosterGridLayoutManager;
-import org.nowxd.popularmovies.data.Movie;
 import org.nowxd.popularmovies.database.MovieContract;
 import org.nowxd.popularmovies.utils.SyncUtils;
 

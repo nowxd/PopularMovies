@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.util.Log;
 
-import org.nowxd.popularmovies.data.Movie;
+import org.nowxd.popularmovies.model.Movie;
 import org.nowxd.popularmovies.database.MovieContract;
 
 public class DatabaseUtils {
@@ -24,9 +24,7 @@ public class DatabaseUtils {
         ContentValues[] contentValuesArray = new ContentValues[movies.length];
 
         for (int index = 0; index < movies.length; index++) {
-
             contentValuesArray[index] = movies[index].toContentValues(sortType);
-
         }
 
         // Bulk insert the new entries

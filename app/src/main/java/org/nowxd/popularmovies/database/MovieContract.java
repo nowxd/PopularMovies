@@ -17,11 +17,13 @@ public class MovieContract {
 
         public static final String TABLE_NAME = "movies";
 
+        public static final String COLUMN_API_ID = "api_id";
         public static final String COLUMN_TITLE = "title";
         public static final String COLUMN_IMAGE_URL = "image_url";
         public static final String COLUMN_PLOT = "plot";
-        public static final String COLUMN_USER_RATING = "user_rating";
         public static final String COLUMN_RELEASE_DATE = "release_date";
+        public static final String COLUMN_USER_RATING = "user_rating";
+        public static final String COLUMN_POPULARITY = "popularity";
         public static final String COLUMN_SORT_TYPE = "sort_type";
 
     }

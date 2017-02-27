@@ -3,7 +3,6 @@ package org.nowxd.popularmovies.custom;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
 import org.nowxd.popularmovies.R;
-import org.nowxd.popularmovies.data.Movie;
 import org.nowxd.popularmovies.database.MovieContract;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder>{
@@ -105,5 +103,4 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
         }
     }
-
 }

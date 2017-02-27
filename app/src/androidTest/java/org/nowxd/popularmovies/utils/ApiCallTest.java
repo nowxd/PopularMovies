@@ -7,8 +7,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nowxd.popularmovies.BuildConfig;
-import org.nowxd.popularmovies.data.Review;
-import org.nowxd.popularmovies.data.Trailer;
+import org.nowxd.popularmovies.model.Review;
+import org.nowxd.popularmovies.model.Trailer;
 
 @RunWith(AndroidJUnit4.class)
 public class ApiCallTest {

@@ -1,4 +1,4 @@
-package org.nowxd.popularmovies.data;
+package org.nowxd.popularmovies.model;
 
 
 import org.json.JSONException;
@@ -17,6 +17,7 @@ public class Review {
     private String content;
     private String url;
 
+    // JSON keys
     private static final String AUTHOR_KEY = "author";
     private static final String CONTENT_KEY = "content";
     private static final String URL_KEY = "url";

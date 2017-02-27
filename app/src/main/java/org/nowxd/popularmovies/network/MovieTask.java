@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import org.nowxd.popularmovies.BuildConfig;
-import org.nowxd.popularmovies.data.Movie;
+import org.nowxd.popularmovies.model.Movie;
 import org.nowxd.popularmovies.utils.DatabaseUtils;
 import org.nowxd.popularmovies.utils.JsonUtils;
 import org.nowxd.popularmovies.utils.NetworkUtils;
