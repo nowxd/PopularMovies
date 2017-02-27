@@ -1,5 +1,6 @@
 package org.nowxd.popularmovies.activity;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -15,12 +16,15 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import org.nowxd.popularmovies.R;
+import org.nowxd.popularmovies.custom.ReviewAdapter;
 import org.nowxd.popularmovies.custom.TrailerAdapter;
 import org.nowxd.popularmovies.database.MovieContract;
+import org.nowxd.popularmovies.model.Review;
 import org.nowxd.popularmovies.model.Trailer;
+import org.nowxd.popularmovies.network.ReviewTaskLoader;
 import org.nowxd.popularmovies.network.TrailerTaskLoader;
 
-public class MovieDetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Trailer[]>{
+public class MovieDetailActivity extends AppCompatActivity {
 
     private static final String TAG = MovieDetailActivity.class.getSimpleName();
 
@@ -33,6 +37,7 @@ public class MovieDetailActivity extends AppCompatActivity implements LoaderMana
     private Cursor movieCursor;
 
     private TrailerAdapter trailerAdapter;
+    private ReviewAdapter reviewAdapter;
 
     private int TRAILER_LOADER_ID = 1;
     private int REVIEW_LOADER_ID = 2;
@@ -75,6 +80,7 @@ public class MovieDetailActivity extends AppCompatActivity implements LoaderMana
 
     private void setupRecyclerViews() {
 
+        // Trailers
         RecyclerView trailerRecyclerView = (RecyclerView) findViewById(R.id.rv_trailer_list);
 
         RecyclerView.LayoutManager trailerLayoutManager = new LinearLayoutManager(this);
@@ -83,11 +89,77 @@ public class MovieDetailActivity extends AppCompatActivity implements LoaderMana
         trailerAdapter = new TrailerAdapter();
         trailerRecyclerView.setAdapter(trailerAdapter);
 
+        // Reviews
+        RecyclerView reviewRecyclerView = (RecyclerView) findViewById(R.id.rv_review_list);
+
+        RecyclerView.LayoutManager reviewLayoutManager = new LinearLayoutManager(this);
+        reviewRecyclerView.setLayoutManager(reviewLayoutManager);
+
+        reviewAdapter = new ReviewAdapter();
+        reviewRecyclerView.setAdapter(reviewAdapter);
+
     }
 
+    /**
+     * Loaders for trailers and reviews
+     */
     private void setupLoaders() {
 
-        getSupportLoaderManager().initLoader(TRAILER_LOADER_ID, null, this);
+        final Context context = this;
+
+        // Trailer Loader
+        final LoaderManager.LoaderCallbacks<Trailer[]> trailerLoader = new LoaderManager.LoaderCallbacks<Trailer[]>() {
+            @Override
+            public Loader<Trailer[]> onCreateLoader(int id, Bundle args) {
+                int idIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_API_ID);
+                String movieId = movieCursor.getString(idIndex);
+
+                TrailerTaskLoader loader = new TrailerTaskLoader(context, movieId);
+                loader.forceLoad();
+
+                return loader;
+            }
+
+            @Override
+            public void onLoadFinished(Loader<Trailer[]> loader, Trailer[] data) {
+                trailerAdapter.setTrailers(data);
+            }
+
+            @Override
+            public void onLoaderReset(Loader<Trailer[]> loader) {
+                trailerAdapter.setTrailers(null);
+            }
+        };
+
+        getSupportLoaderManager().initLoader(TRAILER_LOADER_ID, null, trailerLoader);
+
+        // Review Loader
+        final LoaderManager.LoaderCallbacks<Review[]> reviewLoader = new LoaderManager.LoaderCallbacks<Review[]>() {
+            @Override
+            public Loader<Review[]> onCreateLoader(int id, Bundle args) {
+
+                int idIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_API_ID);
+                String movieId = movieCursor.getString(idIndex);
+
+                ReviewTaskLoader loader = new ReviewTaskLoader(context, movieId);
+                loader.forceLoad();
+
+                return loader;
+
+            }
+
+            @Override
+            public void onLoadFinished(Loader<Review[]> loader, Review[] data) {
+                reviewAdapter.setReviews(data);
+            }
+
+            @Override
+            public void onLoaderReset(Loader<Review[]> loader) {
+                reviewAdapter.setReviews(null);
+            }
+        };
+
+        getSupportLoaderManager().initLoader(REVIEW_LOADER_ID, null, reviewLoader);
 
     }
 
@@ -153,28 +225,4 @@ public class MovieDetailActivity extends AppCompatActivity implements LoaderMana
 
     }
 
-    /**
-     * Trailer Loader
-     */
-    @Override
-    public Loader<Trailer[]> onCreateLoader(int id, Bundle args) {
-
-        int idIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_API_ID);
-        String movieId = movieCursor.getString(idIndex);
-
-        TrailerTaskLoader loader = new TrailerTaskLoader(this, movieId);
-        loader.forceLoad();
-
-        return loader;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Trailer[]> loader, Trailer[] data) {
-        trailerAdapter.setTrailers(data);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Trailer[]> loader) {
-        trailerAdapter.setTrailers(null);
-    }
 }

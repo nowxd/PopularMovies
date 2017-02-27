@@ -18,7 +18,6 @@ public class Movie implements Parcelable {
         release date
      */
 
-    // TODO Retrieve Movie API ID and popularity (sort by) as well
     private String apiId;
     private String title;
     private String posterImageUrl;
@@ -53,28 +52,6 @@ public class Movie implements Parcelable {
         }
 
     }
-
-    protected Movie(Parcel in) {
-        apiId = in.readString();
-        title = in.readString();
-        posterImageUrl = in.readString();
-        plotSynopsis = in.readString();
-        releaseDate = in.readString();
-        userRating = in.readDouble();
-        popularity = in.readDouble();
-    }
-
-    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
-        @Override
-        public Movie createFromParcel(Parcel in) {
-            return new Movie(in);
-        }
-
-        @Override
-        public Movie[] newArray(int size) {
-            return new Movie[size];
-        }
-    };
 
     public ContentValues toContentValues(String sortType) {
 
@@ -161,6 +138,28 @@ public class Movie implements Parcelable {
                 ", popularity=" + popularity +
                 '}';
     }
+
+    protected Movie(Parcel in) {
+        apiId = in.readString();
+        title = in.readString();
+        posterImageUrl = in.readString();
+        plotSynopsis = in.readString();
+        releaseDate = in.readString();
+        userRating = in.readDouble();
+        popularity = in.readDouble();
+    }
+
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 
     @Override
     public int describeContents() {

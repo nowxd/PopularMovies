@@ -23,5 +23,6 @@ public class TrailerTaskLoader extends android.support.v4.content.AsyncTaskLoade
         String jsonData = NetworkUtils.requestMovieTrailers(movieId, BuildConfig.MOVIE_API_KEY);
 
         return JsonUtils.processTrailerJsonString(jsonData);
+
     }
 }

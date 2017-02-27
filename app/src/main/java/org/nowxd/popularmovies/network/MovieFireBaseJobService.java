@@ -45,7 +45,6 @@ public class MovieFireBaseJobService extends JobService {
             }
 
             movieTasks.clear();
-
         }
 
         return true;

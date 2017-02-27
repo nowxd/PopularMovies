@@ -40,10 +40,8 @@ public class Review {
 
     // Limit the amount of content shown
     private String truncate(String content) {
-
         if (content.length() <= MAX_CONTENT_LEN) return content;
         return content.substring(0, MAX_CONTENT_LEN) + "...";
-
     }
 
     public String getAuthor() {
