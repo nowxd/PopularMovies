@@ -77,12 +77,6 @@ public class MovieProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Uri not supported: " + uri);
         }
 
-//        if (id != -1) {
-//            returnUri = ContentUris.withAppendedId(uri, id);
-//        } else {
-//            throw new android.database.SQLException("Failed to insert into " + uri);
-//        }
-
         returnUri = ContentUris.withAppendedId(uri, id);
 
         if (getContext() != null) {

@@ -23,8 +23,6 @@ import org.nowxd.popularmovies.R;
 import org.nowxd.popularmovies.custom.MovieAdapter;
 import org.nowxd.popularmovies.custom.MoviePosterGridLayoutManager;
 import org.nowxd.popularmovies.database.MovieContract;
-import org.nowxd.popularmovies.model.Movie;
-import org.nowxd.popularmovies.network.MovieTask;
 import org.nowxd.popularmovies.utils.SyncUtils;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MoviePosterOnClickListener,
@@ -168,8 +166,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         String sortType = movieSortByValues[selectionIndex];
 
         Uri uri = null;
-//        String whereClause = null;
-//        String[] whereArgs = null;
         String orderBy = null;
 
         if (sortType.equals(getString(R.string.top_rated_sort_value))) {

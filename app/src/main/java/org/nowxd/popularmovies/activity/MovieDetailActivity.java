@@ -86,7 +86,6 @@ public class MovieDetailActivity extends AppCompatActivity
                 MovieContract.MovieEntry.COLUMN_PLOT,
                 MovieContract.MovieEntry.COLUMN_USER_RATING,
                 MovieContract.MovieEntry.COLUMN_RELEASE_DATE,
-                MovieContract.MovieEntry.COLUMN_CURRENT
         };
 
         String whereClause = MovieContract.MovieEntry._ID + "=?";
@@ -120,7 +119,6 @@ public class MovieDetailActivity extends AppCompatActivity
         int plotIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_PLOT);
         int ratingIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_USER_RATING);
         int releaseDateIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_RELEASE_DATE);
-        int currentIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_CURRENT);
 
         movieTitleTextView.setText(movieCursor.getString(titleIndex));
 
@@ -159,8 +157,6 @@ public class MovieDetailActivity extends AppCompatActivity
             addToFavoritesImageView.setImageDrawable(ResourcesCompat.getDrawable(
                     getResources(), R.drawable.add_to_favorites, null));
         }
-
-        Log.d(TAG, "setupViews: CURRENT SET TO " + movieCursor.getInt(currentIndex));
 
         final Context context = this;
 

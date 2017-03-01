@@ -10,8 +10,6 @@ import android.util.Log;
 import org.nowxd.popularmovies.model.Movie;
 import org.nowxd.popularmovies.database.MovieContract;
 
-import javax.xml.transform.URIResolver;
-
 public class DatabaseUtils {
 
     private static String TAG = DatabaseUtils.class.getSimpleName();
@@ -20,11 +18,6 @@ public class DatabaseUtils {
      * Deletes previous movie entries and adds the new movies in the array to the database.
      */
     public synchronized static void updateMovieDatabase(Context context, Movie[] movies, String sortType) {
-
-        // Update current to false
-        ContentValues updatedCurrentContentValues = new ContentValues();
-        updatedCurrentContentValues.put(MovieContract.MovieEntry.COLUMN_CURRENT, false);
-        context.getContentResolver().update(MovieContract.MovieEntry.CONTENT_URI, updatedCurrentContentValues, null, null);
 
         // Add each movie to the db
         for (Movie movie : movies) {

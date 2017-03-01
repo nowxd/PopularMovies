@@ -2,7 +2,6 @@ package org.nowxd.popularmovies.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
@@ -28,8 +27,7 @@ public class MovieDbHelper extends SQLiteOpenHelper {
                 MovieContract.MovieEntry.COLUMN_PLOT + " TEXT NOT NULL, " +
                 MovieContract.MovieEntry.COLUMN_USER_RATING + " REAL NOT NULL, " +
                 MovieContract.MovieEntry.COLUMN_POPULARITY + " REAL NOT NULL, " +
-                MovieContract.MovieEntry.COLUMN_RELEASE_DATE + " TEXT NOT NULL, " +
-                MovieContract.MovieEntry.COLUMN_CURRENT + " BOOLEAN NOT NULL" +
+                MovieContract.MovieEntry.COLUMN_RELEASE_DATE + " TEXT NOT NULL " +
                 ");";
 
         final String CREATE_FAVORITE_TABLE_SQL = "CREATE TABLE IF NOT EXISTS " + MovieContract.FavoriteEntry.TABLE_NAME + " (" +
