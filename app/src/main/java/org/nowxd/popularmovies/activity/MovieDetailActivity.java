@@ -3,13 +3,14 @@ package org.nowxd.popularmovies.activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,7 +25,8 @@ import org.nowxd.popularmovies.model.Trailer;
 import org.nowxd.popularmovies.network.ReviewTaskLoader;
 import org.nowxd.popularmovies.network.TrailerTaskLoader;
 
-public class MovieDetailActivity extends AppCompatActivity {
+public class MovieDetailActivity extends AppCompatActivity
+        implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = MovieDetailActivity.class.getSimpleName();
 
@@ -33,14 +35,16 @@ public class MovieDetailActivity extends AppCompatActivity {
     private TextView movieRatingTextView;
     private TextView movieReleaseDateTextView;
     private TextView moviePlotTextView;
+    private ImageView addToFavoritesImageView;
 
-    private Cursor movieCursor;
+    private long movieID;
 
     private TrailerAdapter trailerAdapter;
     private ReviewAdapter reviewAdapter;
 
-    private int TRAILER_LOADER_ID = 1;
-    private int REVIEW_LOADER_ID = 2;
+    private final int MOVIE_LOADER_ID = 20;
+    private final int TRAILER_LOADER_ID = 21;
+    private final int REVIEW_LOADER_ID = 22;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,30 +56,100 @@ public class MovieDetailActivity extends AppCompatActivity {
         movieRatingTextView = (TextView) findViewById(R.id.tv_user_rating);
         movieReleaseDateTextView = (TextView) findViewById(R.id.tv_release_date);
         moviePlotTextView = (TextView) findViewById(R.id.tv_movie_plot);
+        addToFavoritesImageView = (ImageView) findViewById(R.id.iv_add_to_favorites);
 
         if (getIntent().hasExtra(getString(R.string.movie_id_intent_key))) {
 
-            long movieID = getIntent().getLongExtra(getString(R.string.movie_id_intent_key), 0);
+            this.movieID = getIntent().getLongExtra(getString(R.string.movie_id_intent_key), 0);
 
-            movieCursor = initCursor(movieID);
-
-            setUpViews();
+            getSupportLoaderManager().initLoader(MOVIE_LOADER_ID, null, this);
 
         }
-
-        setupRecyclerViews();
-        setupLoaders();
 
     }
 
     @Override
-    protected void onDestroy() {
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
+        String[] projection = {
+                MovieContract.MovieEntry._ID,
+                MovieContract.MovieEntry.COLUMN_API_ID,
+                MovieContract.MovieEntry.COLUMN_TITLE,
+                MovieContract.MovieEntry.COLUMN_IMAGE_URL,
+                MovieContract.MovieEntry.COLUMN_PLOT,
+                MovieContract.MovieEntry.COLUMN_USER_RATING,
+                MovieContract.MovieEntry.COLUMN_RELEASE_DATE,
+        };
+
+        String whereClause = MovieContract.MovieEntry._ID + "=?";
+        String[] whereArgs = {Long.toString(movieID)};
+
+        return new CursorLoader(this, MovieContract.MovieEntry.CONTENT_URI, projection, whereClause, whereArgs, null);
+
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor movieCursor) {
 
         if (movieCursor != null) {
-            movieCursor.close();
+
+            movieCursor.moveToFirst();
+
+            setUpViews(movieCursor);
+            setupRecyclerViews();
+            setupLoaders(movieCursor);
+
         }
 
-        super.onDestroy();
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+    }
+
+    private void setUpViews(Cursor movieCursor) {
+
+        int titleIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_TITLE);
+        int imgIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_IMAGE_URL);
+        int plotIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_PLOT);
+        int ratingIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_USER_RATING);
+        int releaseDateIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_RELEASE_DATE);
+
+        movieTitleTextView.setText(movieCursor.getString(titleIndex));
+
+        Picasso.with(getApplicationContext())
+                .load(movieCursor.getString(imgIndex))
+                .fit()
+                .into(moviePosterImageView);
+
+        String userRating = String.format(
+                getResources().getString(R.string.user_rating),
+                movieCursor.getDouble(ratingIndex)
+        );
+
+        movieRatingTextView.setText(userRating);
+
+        String releaseDate = String.format(
+                getResources().getString(R.string.release_date),
+                movieCursor.getString(releaseDateIndex)
+        );
+
+        movieReleaseDateTextView.setText(releaseDate);
+
+        String moviePlot = String.format(
+                getResources().getString(R.string.movie_plot),
+                movieCursor.getString(plotIndex)
+        );
+
+        moviePlotTextView.setText(moviePlot);
+
+        addToFavoritesImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
     }
 
     private void setupRecyclerViews() {
@@ -103,7 +177,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     /**
      * Loaders for trailers and reviews
      */
-    private void setupLoaders() {
+    private void setupLoaders(final Cursor movieCursor) {
 
         final Context context = this;
 
@@ -160,68 +234,6 @@ public class MovieDetailActivity extends AppCompatActivity {
         };
 
         getSupportLoaderManager().initLoader(REVIEW_LOADER_ID, null, reviewLoader);
-
-    }
-
-    private Cursor initCursor(long movieID) {
-
-        String whereClause = MovieContract.MovieEntry._ID + "=?";
-        String[] whereArgs = {Long.toString(movieID)};
-
-        String[] projection = {
-                MovieContract.MovieEntry._ID,
-                MovieContract.MovieEntry.COLUMN_API_ID,
-                MovieContract.MovieEntry.COLUMN_TITLE,
-                MovieContract.MovieEntry.COLUMN_IMAGE_URL,
-                MovieContract.MovieEntry.COLUMN_PLOT,
-                MovieContract.MovieEntry.COLUMN_USER_RATING,
-                MovieContract.MovieEntry.COLUMN_RELEASE_DATE,
-        };
-
-        Cursor cursor = getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI, projection,
-                whereClause, whereArgs, null);
-
-        cursor.moveToFirst();
-
-        return cursor;
-
-    }
-
-    private void setUpViews() {
-
-        int titleIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_TITLE);
-        int imgIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_IMAGE_URL);
-        int plotIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_PLOT);
-        int ratingIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_USER_RATING);
-        int releaseDateIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_RELEASE_DATE);
-
-        movieTitleTextView.setText(movieCursor.getString(titleIndex));
-
-        Picasso.with(getApplicationContext())
-                .load(movieCursor.getString(imgIndex))
-                .fit()
-                .into(moviePosterImageView);
-
-        String userRating = String.format(
-                getResources().getString(R.string.user_rating),
-                movieCursor.getDouble(ratingIndex)
-        );
-
-        movieRatingTextView.setText(userRating);
-
-        String releaseDate = String.format(
-                getResources().getString(R.string.release_date),
-                movieCursor.getString(releaseDateIndex)
-        );
-
-        movieReleaseDateTextView.setText(releaseDate);
-
-        String moviePlot = String.format(
-                getResources().getString(R.string.movie_plot),
-                movieCursor.getString(plotIndex)
-        );
-
-        moviePlotTextView.setText(moviePlot);
 
     }
 
