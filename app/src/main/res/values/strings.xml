@@ -7,14 +7,20 @@
     <string name="movie_id_intent_key" translatable="false">movie_id_key</string>
     <string name="selection_index_key" translatable="false">sort_by_index</string>
 
+    <string name="top_rated_sort_value" translatable="false">top_rated</string>
+    <string name="popular_sort_value" translatable="false">popular</string>
+    <string name="favorites_sort_value" translatable="false">favorites</string>
+
     <string-array name="spinner_text_display_array">
         <item>Popular</item>
         <item>Top Rated</item>
+        <item>Favorites</item>
     </string-array>
 
     <string-array name="sort_by_array" translatable="false">
         <item>popular</item>
         <item>top_rated</item>
+        <item>favorites</item>
     </string-array>
 
     <!-- Movie Detail Activity -->

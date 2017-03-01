@@ -12,6 +12,9 @@ import android.support.annotation.NonNull;
 public class MovieProvider extends ContentProvider {
 
     public static final int MOVIE = 100;
+    public static final int FAVORITE = 200;
+    public static final int TOP_RATED = 300;
+    public static final int POPULAR = 400;
 
     private static UriMatcher uriMatcher = buildUriMatcher();
 
@@ -27,6 +30,9 @@ public class MovieProvider extends ContentProvider {
 
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(MovieContract.AUTHORITY, MovieContract.MOVIE_PATH, MOVIE);
+        uriMatcher.addURI(MovieContract.AUTHORITY, MovieContract.FAVORITE_PATH, FAVORITE);
+        uriMatcher.addURI(MovieContract.AUTHORITY, MovieContract.TOP_RATED_PATH, TOP_RATED);
+        uriMatcher.addURI(MovieContract.AUTHORITY, MovieContract.POPULAR_PATH, POPULAR);
 
         return uriMatcher;
 
@@ -38,27 +44,46 @@ public class MovieProvider extends ContentProvider {
         final SQLiteDatabase db = dbHelper.getWritableDatabase();
         int match = uriMatcher.match(uri);
 
+        long id;
         Uri returnUri;
 
         switch (match) {
 
             case MOVIE:
 
-                long id = db.insert(MovieContract.MovieEntry.TABLE_NAME, null, contentValues);
+                id = db.insertWithOnConflict(MovieContract.MovieEntry.TABLE_NAME, null, contentValues,
+                        SQLiteDatabase.CONFLICT_IGNORE);
+                break;
 
-                if (id != -1) {
-                    returnUri = ContentUris.withAppendedId(MovieContract.MovieEntry.CONTENT_URI, id);
-                } else {
-                    throw new android.database.SQLException("Failed to insert in " + uri);
-                }
+            case FAVORITE:
 
+                id = db.insertWithOnConflict(MovieContract.FavoriteEntry.TABLE_NAME, null, contentValues,
+                        SQLiteDatabase.CONFLICT_IGNORE);
+                break;
+
+            case TOP_RATED:
+
+                id = db.insertWithOnConflict(MovieContract.TopRatedEntry.TABLE_NAME, null, contentValues,
+                        SQLiteDatabase.CONFLICT_IGNORE);
+                break;
+
+            case POPULAR:
+
+                id = db.insertWithOnConflict(MovieContract.PopularEntry.TABLE_NAME, null, contentValues,
+                        SQLiteDatabase.CONFLICT_IGNORE);
                 break;
 
             default:
-
                 throw new UnsupportedOperationException("Uri not supported: " + uri);
-
         }
+
+//        if (id != -1) {
+//            returnUri = ContentUris.withAppendedId(uri, id);
+//        } else {
+//            throw new android.database.SQLException("Failed to insert into " + uri);
+//        }
+
+        returnUri = ContentUris.withAppendedId(uri, id);
 
         if (getContext() != null) {
             getContext().getContentResolver().notifyChange(uri, null);
@@ -74,20 +99,52 @@ public class MovieProvider extends ContentProvider {
         final SQLiteDatabase db = dbHelper.getReadableDatabase();
         int match = uriMatcher.match(uri);
 
-        Cursor returnCursor;
+        String table;
 
         switch (match) {
 
             case MOVIE:
 
-                returnCursor = db.query(MovieContract.MovieEntry.TABLE_NAME,
-                        projection, where, whereArgs, null, null, sortBy);
+                table = MovieContract.MovieEntry.TABLE_NAME;
+
+                break;
+
+            case FAVORITE:
+
+                table = MovieContract.FavoriteEntry.TABLE_NAME + " INNER JOIN " +
+                        MovieContract.MovieEntry.TABLE_NAME + " ON " +
+                        MovieContract.FavoriteEntry.TABLE_NAME + "." + MovieContract.FavoriteEntry.COLUMN_MOVIE_ID +
+                        " = " +
+                        MovieContract.MovieEntry.TABLE_NAME + "." + MovieContract.MovieEntry._ID;
+
+                break;
+
+            case TOP_RATED:
+
+                table = MovieContract.TopRatedEntry.TABLE_NAME + " INNER JOIN " +
+                        MovieContract.MovieEntry.TABLE_NAME + " ON " +
+                        MovieContract.TopRatedEntry.TABLE_NAME + "." + MovieContract.TopRatedEntry.COLUMN_MOVIE_ID +
+                        " = " +
+                        MovieContract.MovieEntry.TABLE_NAME + "." + MovieContract.MovieEntry._ID;
+
+                break;
+
+            case POPULAR:
+
+                table = MovieContract.PopularEntry.TABLE_NAME + " INNER JOIN " +
+                        MovieContract.MovieEntry.TABLE_NAME + " ON " +
+                        MovieContract.PopularEntry.TABLE_NAME + "." + MovieContract.PopularEntry.COLUMN_MOVIE_ID +
+                        " = " +
+                        MovieContract.MovieEntry.TABLE_NAME + "." + MovieContract.MovieEntry._ID;
+
                 break;
 
             default:
                 throw new UnsupportedOperationException("Uri not supported: " + uri);
 
         }
+
+        Cursor returnCursor = db.query(table, projection, where, whereArgs, null, null, sortBy);
 
         if (getContext() != null) {
             returnCursor.setNotificationUri(getContext().getContentResolver(), uri);
@@ -109,6 +166,11 @@ public class MovieProvider extends ContentProvider {
             case MOVIE:
 
                 deleteCount = db.delete(MovieContract.MovieEntry.TABLE_NAME, where, whereArgs);
+                break;
+
+            case FAVORITE:
+
+                deleteCount = db.delete(MovieContract.FavoriteEntry.TABLE_NAME, where, whereArgs);
                 break;
 
             default:
@@ -174,7 +236,7 @@ public class MovieProvider extends ContentProvider {
 
                     for (ContentValues contentValue : contentValues) {
 
-                        long id = db.insert(MovieContract.MovieEntry.TABLE_NAME, null, contentValue);
+                        long id = db.replace(MovieContract.MovieEntry.TABLE_NAME, null, contentValue);
 
                         if (id != -1) {
                             insertCount++;

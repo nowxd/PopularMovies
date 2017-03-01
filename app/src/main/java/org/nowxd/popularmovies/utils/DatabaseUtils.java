@@ -1,11 +1,16 @@
 package org.nowxd.popularmovies.utils;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
 import android.util.Log;
 
 import org.nowxd.popularmovies.model.Movie;
 import org.nowxd.popularmovies.database.MovieContract;
+
+import javax.xml.transform.URIResolver;
 
 public class DatabaseUtils {
 
@@ -16,21 +21,76 @@ public class DatabaseUtils {
      */
     public synchronized static void updateMovieDatabase(Context context, Movie[] movies, String sortType) {
 
-        // Delete the movies of that sort type first
-        String whereClause = MovieContract.MovieEntry.COLUMN_SORT_TYPE + "=?";
-        String[] whereArgs = {sortType};
-        context.getContentResolver().delete(MovieContract.MovieEntry.CONTENT_URI, whereClause, whereArgs);
+        // Update current to false
+        ContentValues updatedCurrentContentValues = new ContentValues();
+        updatedCurrentContentValues.put(MovieContract.MovieEntry.COLUMN_CURRENT, false);
+        context.getContentResolver().update(MovieContract.MovieEntry.CONTENT_URI, updatedCurrentContentValues, null, null);
 
-        ContentValues[] contentValuesArray = new ContentValues[movies.length];
+        // Add each movie to the db
+        for (Movie movie : movies) {
 
-        for (int index = 0; index < movies.length; index++) {
-            contentValuesArray[index] = movies[index].toContentValues(sortType);
+            ContentValues contentValues =  movie.toContentValues();
+
+            Uri uri = context.getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues);
+
+            long id = ContentUris.parseId(uri);
+
+            // Add to respective sort type tables as well
+            if (sortType.equals(MovieContract.TopRatedEntry.TABLE_NAME)) {
+
+                ContentValues joinCV = new ContentValues();
+                joinCV.put(MovieContract.TopRatedEntry.COLUMN_MOVIE_ID, id);
+                context.getContentResolver().insert(MovieContract.TopRatedEntry.CONTENT_URI, joinCV);
+
+            } else if (sortType.equals(MovieContract.PopularEntry.TABLE_NAME)) {
+
+                ContentValues joinCV = new ContentValues();
+                joinCV.put(MovieContract.PopularEntry.COLUMN_MOVIE_ID, id);
+                context.getContentResolver().insert(MovieContract.PopularEntry.CONTENT_URI, joinCV);
+
+            }
+
         }
 
-        // Bulk insert the new entries
-        int insertCount = context.getContentResolver().bulkInsert(MovieContract.MovieEntry.CONTENT_URI, contentValuesArray);
+        Log.d(TAG, "updateMovieDatabase: " + sortType + " movies updated!");
 
-        Log.d(TAG, "updateMovieDatabase: NUMBER OF MOVIES ADDED: " + insertCount);
+    }
+
+    /**
+     * Check if the movie is in the favorites table
+     */
+    public static boolean checkIfFavorited(Context context, long movieId) {
+
+        String whereClause = MovieContract.FavoriteEntry.COLUMN_MOVIE_ID + "=?";
+        String[] whereArgs = {Long.toString(movieId)};
+
+        Cursor cursor = context.getContentResolver().query(MovieContract.FavoriteEntry.CONTENT_URI, null, whereClause, whereArgs,
+                null);
+
+        boolean result = cursor != null && cursor.getCount() > 0;
+
+        if (cursor != null) cursor.close();
+
+        return result;
+
+    }
+
+    public static void addToFavorites(Context context, long movieId) {
+
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(MovieContract.FavoriteEntry.COLUMN_MOVIE_ID, movieId);
+
+        context.getContentResolver().insert(MovieContract.FavoriteEntry.CONTENT_URI, contentValues);
+
+    }
+
+    public static void removeFromFavorites(Context context, long movieId) {
+
+        String whereClause = MovieContract.FavoriteEntry.COLUMN_MOVIE_ID + "=?";
+        String[] whereArgs = {Long.toString(movieId)};
+
+        context.getContentResolver().delete(MovieContract.FavoriteEntry.CONTENT_URI, whereClause, whereArgs);
 
     }
 

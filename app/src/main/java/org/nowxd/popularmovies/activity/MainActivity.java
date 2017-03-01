@@ -3,6 +3,7 @@ package org.nowxd.popularmovies.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
@@ -10,6 +11,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +23,8 @@ import org.nowxd.popularmovies.R;
 import org.nowxd.popularmovies.custom.MovieAdapter;
 import org.nowxd.popularmovies.custom.MoviePosterGridLayoutManager;
 import org.nowxd.popularmovies.database.MovieContract;
+import org.nowxd.popularmovies.model.Movie;
+import org.nowxd.popularmovies.network.MovieTask;
 import org.nowxd.popularmovies.utils.SyncUtils;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MoviePosterOnClickListener,
@@ -71,6 +75,15 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         // Loader
         getSupportLoaderManager().initLoader(LOADER_ID, null, this);
+
+//        for (String sortValue : movieSortByValues) {
+//
+//            if (sortValue.equals(getString(R.string.favorites_sort_value))) continue;
+//
+//            MovieTask movieTask = new MovieTask(this);
+//            movieTask.execute(sortValue);
+//
+//        }
 
     }
 
@@ -154,16 +167,34 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         String sortType = movieSortByValues[selectionIndex];
 
-        String whereClause = MovieContract.MovieEntry.COLUMN_SORT_TYPE + "=?";
-        String[] whereArgs = {sortType};
+        Uri uri = null;
+//        String whereClause = null;
+//        String[] whereArgs = null;
+        String orderBy = null;
 
-        return new CursorLoader(this, MovieContract.MovieEntry.CONTENT_URI, null, whereClause,
-                whereArgs, null);
+        if (sortType.equals(getString(R.string.top_rated_sort_value))) {
+
+            uri = MovieContract.TopRatedEntry.CONTENT_URI;
+            orderBy = MovieContract.MovieEntry.COLUMN_USER_RATING + " DESC";
+
+        } else if (sortType.equals(getString(R.string.popular_sort_value))) {
+
+            uri = MovieContract.PopularEntry.CONTENT_URI;
+            orderBy = MovieContract.MovieEntry.COLUMN_POPULARITY + " DESC";
+
+        } else if (sortType.equals(getString(R.string.favorites_sort_value))) {
+
+            uri = MovieContract.FavoriteEntry.CONTENT_URI;
+
+        }
+
+        return new CursorLoader(this, uri, null, null, null, orderBy);
 
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        Log.d(TAG, "onLoadFinished: NUMBER OF RESULTS " + data.getCount());
         movieAdapter.swapCursor(data);
     }
 

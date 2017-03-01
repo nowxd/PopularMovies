@@ -45,7 +45,7 @@ public class ContentProviderTest {
         contentValues.put(MovieContract.MovieEntry.COLUMN_PLOT, MOVIE_PLOT);
         contentValues.put(MovieContract.MovieEntry.COLUMN_USER_RATING, MOVIE_RATING);
         contentValues.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, MOVIE_RELEASE_DATE);
-        contentValues.put(MovieContract.MovieEntry.COLUMN_SORT_TYPE, MOVIE_SORT_TYPE);
+//        contentValues.put(MovieContract.MovieEntry.COLUMN_SORT_TYPE, MOVIE_SORT_TYPE);
 
         Uri uri = context.getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues);
 
@@ -60,7 +60,7 @@ public class ContentProviderTest {
                 MovieContract.MovieEntry.COLUMN_PLOT,
                 MovieContract.MovieEntry.COLUMN_USER_RATING,
                 MovieContract.MovieEntry.COLUMN_RELEASE_DATE,
-                MovieContract.MovieEntry.COLUMN_SORT_TYPE
+//                MovieContract.MovieEntry.COLUMN_SORT_TYPE
         };
 
         Cursor cursor = context.getContentResolver().query(
@@ -77,7 +77,7 @@ public class ContentProviderTest {
         int plotIndex = cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_PLOT);
         int ratingIndex = cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_USER_RATING);
         int dateIndex = cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_RELEASE_DATE);
-        int sortIndex = cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_SORT_TYPE);
+//        int sortIndex = cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_SORT_TYPE);
 
         // Assert all the values matches with what we inserted
         Assert.assertEquals(cursor.getLong(idIndex), id);
@@ -87,7 +87,7 @@ public class ContentProviderTest {
         Assert.assertEquals(cursor.getString(dateIndex), MOVIE_RELEASE_DATE);
         double eps = 1e-10;
         Assert.assertEquals(cursor.getDouble(ratingIndex), MOVIE_RATING, eps);
-        Assert.assertEquals(cursor.getString(sortIndex), MOVIE_SORT_TYPE);
+//        Assert.assertEquals(cursor.getString(sortIndex), MOVIE_SORT_TYPE);
 
         cursor.close();
 

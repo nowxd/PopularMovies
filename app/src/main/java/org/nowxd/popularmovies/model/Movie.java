@@ -53,7 +53,7 @@ public class Movie implements Parcelable {
 
     }
 
-    public ContentValues toContentValues(String sortType) {
+    public ContentValues toContentValues() {
 
         ContentValues contentValues = new ContentValues();
 
@@ -64,7 +64,7 @@ public class Movie implements Parcelable {
         contentValues.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, this.getReleaseDate());
         contentValues.put(MovieContract.MovieEntry.COLUMN_USER_RATING, this.getUserRating());
         contentValues.put(MovieContract.MovieEntry.COLUMN_POPULARITY, this.popularity);
-        contentValues.put(MovieContract.MovieEntry.COLUMN_SORT_TYPE, sortType);
+        contentValues.put(MovieContract.MovieEntry.COLUMN_CURRENT, 1);
 
         return contentValues;
 

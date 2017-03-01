@@ -1,10 +1,12 @@
 package org.nowxd.popularmovies.activity;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -24,6 +27,7 @@ import org.nowxd.popularmovies.model.Review;
 import org.nowxd.popularmovies.model.Trailer;
 import org.nowxd.popularmovies.network.ReviewTaskLoader;
 import org.nowxd.popularmovies.network.TrailerTaskLoader;
+import org.nowxd.popularmovies.utils.DatabaseUtils;
 
 public class MovieDetailActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -38,6 +42,7 @@ public class MovieDetailActivity extends AppCompatActivity
     private ImageView addToFavoritesImageView;
 
     private long movieID;
+    private boolean favorited;
 
     private TrailerAdapter trailerAdapter;
     private ReviewAdapter reviewAdapter;
@@ -45,6 +50,8 @@ public class MovieDetailActivity extends AppCompatActivity
     private final int MOVIE_LOADER_ID = 20;
     private final int TRAILER_LOADER_ID = 21;
     private final int REVIEW_LOADER_ID = 22;
+
+    private Toast favoriteToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +86,7 @@ public class MovieDetailActivity extends AppCompatActivity
                 MovieContract.MovieEntry.COLUMN_PLOT,
                 MovieContract.MovieEntry.COLUMN_USER_RATING,
                 MovieContract.MovieEntry.COLUMN_RELEASE_DATE,
+                MovieContract.MovieEntry.COLUMN_CURRENT
         };
 
         String whereClause = MovieContract.MovieEntry._ID + "=?";
@@ -91,11 +99,9 @@ public class MovieDetailActivity extends AppCompatActivity
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor movieCursor) {
 
-        if (movieCursor != null) {
+        if (movieCursor != null && movieCursor.moveToFirst()) {
 
-            movieCursor.moveToFirst();
-
-            setUpViews(movieCursor);
+            setupViews(movieCursor);
             setupRecyclerViews();
             setupLoaders(movieCursor);
 
@@ -107,13 +113,14 @@ public class MovieDetailActivity extends AppCompatActivity
     public void onLoaderReset(Loader<Cursor> loader) {
     }
 
-    private void setUpViews(Cursor movieCursor) {
+    private void setupViews(Cursor movieCursor) {
 
         int titleIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_TITLE);
         int imgIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_IMAGE_URL);
         int plotIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_PLOT);
         int ratingIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_USER_RATING);
         int releaseDateIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_RELEASE_DATE);
+        int currentIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_CURRENT);
 
         movieTitleTextView.setText(movieCursor.getString(titleIndex));
 
@@ -143,13 +150,58 @@ public class MovieDetailActivity extends AppCompatActivity
 
         moviePlotTextView.setText(moviePlot);
 
+        favorited = DatabaseUtils.checkIfFavorited(this, movieID);
+
+        if (favorited) {
+            addToFavoritesImageView.setImageDrawable(ResourcesCompat.getDrawable(
+                    getResources(), R.drawable.add_to_favorites_filled, null));
+        } else {
+            addToFavoritesImageView.setImageDrawable(ResourcesCompat.getDrawable(
+                    getResources(), R.drawable.add_to_favorites, null));
+        }
+
+        Log.d(TAG, "setupViews: CURRENT SET TO " + movieCursor.getInt(currentIndex));
+
+        final Context context = this;
+
         addToFavoritesImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                String toastMessage;
+
+                if (favorited) {
+                    
+                    DatabaseUtils.removeFromFavorites(getApplicationContext(), movieID);
+                    addToFavoritesImageView.setImageDrawable(
+                            ResourcesCompat.getDrawable(getResources(), R.drawable.add_to_favorites, null)
+                    );
+
+                    Log.d(TAG, "onClick: Removed from favorites");
+
+                    toastMessage = "Removed from favorites";
+                    
+                } else {
+
+                    DatabaseUtils.addToFavorites(getApplicationContext(), movieID);
+                    addToFavoritesImageView.setImageDrawable(
+                            ResourcesCompat.getDrawable(getResources(), R.drawable.add_to_favorites_filled, null)
+                    );
+
+                    Log.d(TAG, "onClick: Added to favorites");
+
+                    toastMessage = "Added to favorites";
+                    
+                }
+
+                if (favoriteToast != null) favoriteToast.cancel();
+
+                favoriteToast = Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT);
+                favoriteToast.show();
+
+                favorited = !favorited;
             }
         });
-
     }
 
     private void setupRecyclerViews() {
