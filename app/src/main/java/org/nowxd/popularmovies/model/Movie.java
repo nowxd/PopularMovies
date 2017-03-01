@@ -59,14 +59,27 @@ public class Movie implements Parcelable {
 
         contentValues.put(MovieContract.MovieEntry.COLUMN_API_ID, this.apiId);
         contentValues.put(MovieContract.MovieEntry.COLUMN_TITLE, this.title);
-        contentValues.put(MovieContract.MovieEntry.COLUMN_IMAGE_URL, this.getPosterImageUrl());
-        contentValues.put(MovieContract.MovieEntry.COLUMN_PLOT, this.getPlotSynopsis());
-        contentValues.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, this.getReleaseDate());
-        contentValues.put(MovieContract.MovieEntry.COLUMN_USER_RATING, this.getUserRating());
+        contentValues.put(MovieContract.MovieEntry.COLUMN_IMAGE_URL, this.posterImageUrl);
+        contentValues.put(MovieContract.MovieEntry.COLUMN_PLOT, this.plotSynopsis);
+        contentValues.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, this.releaseDate);
+        contentValues.put(MovieContract.MovieEntry.COLUMN_USER_RATING, this.userRating);
         contentValues.put(MovieContract.MovieEntry.COLUMN_POPULARITY, this.popularity);
 
         return contentValues;
 
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "apiId='" + apiId + '\'' +
+                ", title='" + title + '\'' +
+                ", posterImageUrl='" + posterImageUrl + '\'' +
+                ", plotSynopsis='" + plotSynopsis + '\'' +
+                ", releaseDate='" + releaseDate + '\'' +
+                ", userRating=" + userRating +
+                ", popularity=" + popularity +
+                '}';
     }
 
     public String getTitle() {
@@ -123,19 +136,6 @@ public class Movie implements Parcelable {
 
     public void setPopularity(double popularity) {
         this.popularity = popularity;
-    }
-
-    @Override
-    public String toString() {
-        return "Movie{" +
-                "apiId='" + apiId + '\'' +
-                ", title='" + title + '\'' +
-                ", posterImageUrl='" + posterImageUrl + '\'' +
-                ", plotSynopsis='" + plotSynopsis + '\'' +
-                ", releaseDate='" + releaseDate + '\'' +
-                ", userRating=" + userRating +
-                ", popularity=" + popularity +
-                '}';
     }
 
     protected Movie(Parcel in) {
