@@ -14,15 +14,15 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            card_view:cardCornerRadius="10dp"
+            card_view:cardCornerRadius="@dimen/card_view_corner_radius"
+            card_view:cardElevation="@dimen/card_view_elevation"
             card_view:cardUseCompatPadding="true"
-            card_view:cardElevation="5dp"
             >
 
             <ImageView
                 android:id="@+id/iv_play_trailer"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/player_trailer_dimen"
+                android:layout_height="@dimen/player_trailer_dimen"
                 android:src="@drawable/play_video"
                 android:contentDescription="@null"
                 android:layout_marginRight="@dimen/detail_item_margin"
@@ -36,12 +36,11 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/iv_play_trailer"
                 android:layout_toEndOf="@id/iv_play_trailer"
-                android:textSize="16sp"
-                android:padding="10dp"
+                android:textSize="@dimen/detail_list_item_text_size"
+                android:padding="@dimen/trailer_name_padding"
                 />
 
         </RelativeLayout>
-
 
     </android.support.v7.widget.CardView>
 

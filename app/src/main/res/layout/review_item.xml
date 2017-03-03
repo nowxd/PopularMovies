@@ -10,8 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        card_view:cardCornerRadius="10dp"
-        card_view:cardElevation="5dp"
+        card_view:cardCornerRadius="@dimen/card_view_corner_radius"
+        card_view:cardElevation="@dimen/card_view_elevation"
         card_view:cardUseCompatPadding="true">
 
         <TextView
@@ -20,7 +20,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/detail_item_margin"
             android:textSize="@dimen/detail_review_author_text_size"
-            android:text="@string/review_author"
             android:textStyle="bold"
             />
 
@@ -29,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/detail_item_margin"
-            android:textSize="@dimen/detail_review_content_text_size"
+            android:textSize="@dimen/detail_list_item_text_size"
             />
 
     </LinearLayout>

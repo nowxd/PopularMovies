@@ -15,12 +15,27 @@
     <dimen name="movie_title_text_size">30sp</dimen>
     <dimen name="movie_detail_text_size">18sp</dimen>
 
+    <dimen name="detail_scrollview_horizontal_left_margin">16dp</dimen>
+    <dimen name="detail_scrollview_horizontal_right_margin">5dp</dimen>
+
+    <dimen name="add_to_favorites_text_size">15sp</dimen>
+    <dimen name="add_to_favorites_image_size">40dp</dimen>
+
     <dimen name="detail_item_margin">6dp</dimen>
     <dimen name="rv_detail_item_margin">4dp</dimen>
 
+    <dimen name="card_view_corner_radius">10dp</dimen>
+    <dimen name="card_view_elevation">5dp</dimen>
+
+    <dimen name="detail_list_text_size">25sp</dimen>
+
+    <!--Trailer item-->
+    <dimen name="player_trailer_dimen">40dp</dimen>
+    <dimen name="trailer_name_padding">10dp</dimen>
+
     <!--Review item-->
     <dimen name="detail_review_author_text_size">20sp</dimen>
-    <dimen name="detail_review_content_text_size">16sp</dimen>
+    <dimen name="detail_list_item_text_size">16sp</dimen>
 
 
 </resources>

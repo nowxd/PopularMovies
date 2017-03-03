@@ -7,9 +7,12 @@
     android:layout_width="match_parent"
     android:fillViewport="true"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingStart="@dimen/activity_horizontal_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
+    android:paddingStart="@dimen/detail_scrollview_horizontal_left_margin"
+    android:paddingLeft="@dimen/detail_scrollview_horizontal_left_margin"
+    android:paddingEnd="@dimen/detail_scrollview_horizontal_right_margin"
+    android:paddingRight="@dimen/detail_scrollview_horizontal_right_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    >
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -42,20 +45,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"
+                android:textSize="@dimen/add_to_favorites_text_size"
                 android:text="@string/add_to_favorites"
                 android:layout_gravity="center_vertical" />
 
             <!--Add To Favorites Button-->
             <ImageView
                 android:id="@+id/iv_add_to_favorites"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/add_to_favorites_image_size"
+                android:layout_height="@dimen/add_to_favorites_image_size"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="@dimen/detail_item_margin"
                 android:contentDescription="@null"
                 android:src="@drawable/add_to_favorites" />
-
         </LinearLayout>
 
         <!-- Movie Poster -->
@@ -93,14 +95,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/detail_item_margin"
-            android:paddingRight="4dp"
-            android:paddingEnd="4dp"
             />
+        <!--android:paddingRight="@dimen/movie_plot_right_padding"-->
+        <!--android:paddingEnd="@dimen/movie_plot_right_padding"-->
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
+            android:textSize="@dimen/detail_list_text_size"
+            android:layout_margin="@dimen/detail_item_margin"
             android:text="@string/trailers"
             />
 
@@ -114,7 +117,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
+            android:textSize="@dimen/detail_list_text_size"
+            android:layout_margin="@dimen/detail_item_margin"
             android:text="@string/reviews"
             />
 
