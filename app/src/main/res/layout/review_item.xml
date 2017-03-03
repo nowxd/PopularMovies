@@ -21,6 +21,7 @@
             android:layout_marginBottom="@dimen/detail_item_margin"
             android:textSize="@dimen/detail_review_author_text_size"
             android:textStyle="bold"
+            android:padding="@dimen/detail_list_item_text_padding"
             />
 
         <TextView
@@ -29,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/detail_item_margin"
             android:textSize="@dimen/detail_list_item_text_size"
+            android:padding="@dimen/detail_list_item_text_padding"
             />
 
     </LinearLayout>

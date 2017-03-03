@@ -44,39 +44,4 @@ public class MoviePosterGridLayoutManager extends GridLayoutManager {
 
     }
 
-
-    /*
-    private RecyclerView.LayoutParams generateCustomLayoutParams() {
-
-        this.totalWidth = Math.max(this.totalWidth, getWidth() - getPaddingLeft() - getPaddingRight());
-
-        // Compute the width and height of a GridView item using the total width and spanCount
-        double ratio = moviePosterHeight / moviePosterWidth;
-
-        int columns = getSpanCount();
-
-        int width = (int) (totalWidth / columns);
-        int height = (int) (width * ratio);
-
-        return new GridLayoutManager.LayoutParams(width, height);
-
-    }
-
-    @Override
-    public RecyclerView.LayoutParams generateDefaultLayoutParams() {
-        return generateCustomLayoutParams();
-    }
-
-    @Override
-    public RecyclerView.LayoutParams generateLayoutParams(Context c, AttributeSet attrs) {
-        return generateCustomLayoutParams();
-    }
-
-    @Override
-    public RecyclerView.LayoutParams generateLayoutParams(ViewGroup.LayoutParams lp) {
-        return generateCustomLayoutParams();
-    }
-    */
-
-
 }

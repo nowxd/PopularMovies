@@ -1,12 +1,12 @@
 <resources>
 
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_horizontal_margin">12dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <!-- Main Activity Grid View -->
     <dimen name="movie_poster_width">170dp</dimen>
-    <dimen name="movie_poster_height">280dp</dimen>
+    <dimen name="movie_poster_height">265dp</dimen>
+    <dimen name="movie_poster_padding">10dp</dimen>
 
     <!-- Movie Detail -->
     <dimen name="movie_poster_detail_width">200dp</dimen>
@@ -28,6 +28,8 @@
     <dimen name="card_view_elevation">5dp</dimen>
 
     <dimen name="detail_list_text_size">25sp</dimen>
+    <dimen name="detail_list_item_text_size">16sp</dimen>
+    <dimen name="detail_list_item_text_padding">5dp</dimen>
 
     <!--Trailer item-->
     <dimen name="player_trailer_dimen">40dp</dimen>
@@ -35,7 +37,5 @@
 
     <!--Review item-->
     <dimen name="detail_review_author_text_size">20sp</dimen>
-    <dimen name="detail_list_item_text_size">16sp</dimen>
-
 
 </resources>

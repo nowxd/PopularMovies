@@ -29,6 +29,7 @@ public class Review {
         try {
 
             this.author = jsonObject.getString(AUTHOR_KEY);
+            // Showing the full content for now
             this.content = jsonObject.getString(CONTENT_KEY);
             this.url = jsonObject.getString(URL_KEY);
 

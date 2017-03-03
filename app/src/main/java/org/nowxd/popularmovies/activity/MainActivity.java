@@ -35,8 +35,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     private MovieAdapter movieAdapter;
 
-    // Keeps track of the sort-by values: popular, top_rated
-    private String[] movieSortByValues;
+    // Keeps track of the movie categories: popular, top_rated, favorites
+    private String[] movieCategories;
     private int selectionIndex;
 
     private SharedPreferences preferences;
@@ -46,30 +46,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /**
-         * Recycler View setup
-         */
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_movie_list);
-        recyclerView.setHasFixedSize(true);
+        // Setup the RecyclerView
+        recyclerViewSetup();
 
-        RecyclerView.LayoutManager layoutManager = new MoviePosterGridLayoutManager(this,
-                getResources().getDimension(R.dimen.movie_poster_width),
-                getResources().getDimension(R.dimen.movie_poster_height));
+        // Setup the movie category array
+        movieCategoriesSetup();
 
-        recyclerView.setLayoutManager(layoutManager);
-
-        movieAdapter = new MovieAdapter(getApplicationContext(), this);
-        recyclerView.setAdapter(movieAdapter);
-
-        /**
-         * Movie sort-by values and preferences setup
-         */
-        movieSortByValues = getResources().getStringArray(R.array.sort_by_array);
-
-        // Using preferences to save the selection index
-        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        selectionIndex = preferences.getInt(getString(R.string.selection_index_key), 0);
-
+        // Setup sync
         SyncUtils.scheduleMovieSyncJob(this);
 
         // Loader
@@ -82,11 +65,51 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        /**
-         * Spinner Setup
-         */
         MenuItem menuSpinnerItem = menu.findItem(R.id.menu_item_spinner);
         Spinner spinner = (Spinner) menuSpinnerItem.getActionView();
+
+        spinnerSetup(spinner);
+
+        return true;
+
+    }
+
+    /**
+     * RecyclerView Setup
+     */
+    private void recyclerViewSetup() {
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_movie_list);
+        recyclerView.setHasFixedSize(true);
+
+        RecyclerView.LayoutManager layoutManager = new MoviePosterGridLayoutManager(this,
+                getResources().getDimension(R.dimen.movie_poster_width),
+                getResources().getDimension(R.dimen.movie_poster_height));
+
+        recyclerView.setLayoutManager(layoutManager);
+
+        movieAdapter = new MovieAdapter(getApplicationContext(), this);
+        recyclerView.setAdapter(movieAdapter);
+
+    }
+
+    /**
+     * Movie Categories Setup
+     */
+    private void movieCategoriesSetup() {
+
+        movieCategories = getResources().getStringArray(R.array.movie_category_array);
+
+        // Using preferences to save the selection index
+        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        selectionIndex = preferences.getInt(getString(R.string.selection_index_key), 0);
+
+    }
+
+    /**
+     * Spinner Setup
+     */
+    private void spinnerSetup(Spinner spinner) {
 
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<>(
@@ -121,9 +144,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
             }
         });
-
-        return true;
-
     }
 
     // Called when the spinner index has changed
@@ -153,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-        String sortType = movieSortByValues[selectionIndex];
+        String sortType = movieCategories[selectionIndex];
 
         Uri uri = null;
         String orderBy = null;
@@ -182,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
         // Manually fetch data if we don't have data to work with
-        if (!movieSortByValues[selectionIndex].equals(getString(R.string.favorites_sort_value)) &&
+        if (!movieCategories[selectionIndex].equals(getString(R.string.favorites_sort_value)) &&
                 data.getCount() == 0) {
             forceUpdate();
         }
@@ -202,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
      */
     public void forceUpdate() {
 
-        for (String sortValue : movieSortByValues) {
+        for (String sortValue : movieCategories) {
 
             if (sortValue.equals(getString(R.string.favorites_sort_value))) continue;
 
