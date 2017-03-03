@@ -23,6 +23,7 @@ import org.nowxd.popularmovies.R;
 import org.nowxd.popularmovies.custom.MovieAdapter;
 import org.nowxd.popularmovies.custom.MoviePosterGridLayoutManager;
 import org.nowxd.popularmovies.database.MovieContract;
+import org.nowxd.popularmovies.network.MovieTask;
 import org.nowxd.popularmovies.utils.SyncUtils;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MoviePosterOnClickListener,
@@ -73,15 +74,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         // Loader
         getSupportLoaderManager().initLoader(LOADER_ID, null, this);
-
-//        for (String sortValue : movieSortByValues) {
-//
-//            if (sortValue.equals(getString(R.string.favorites_sort_value))) continue;
-//
-//            MovieTask movieTask = new MovieTask(this);
-//            movieTask.execute(sortValue);
-//
-//        }
 
     }
 
@@ -136,10 +128,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     // Called when the spinner index has changed
     private void updateSelection(int newSelectionIndex) {
-
         selectionIndex = newSelectionIndex;
         getSupportLoaderManager().restartLoader(LOADER_ID, null, this);
-
     }
 
     /**
@@ -190,7 +180,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        Log.d(TAG, "onLoadFinished: NUMBER OF RESULTS " + data.getCount());
+
+        // Manually fetch data if we don't have data to work with
+        if (!movieSortByValues[selectionIndex].equals(getString(R.string.favorites_sort_value)) &&
+                data.getCount() == 0) {
+            forceUpdate();
+        }
+
         movieAdapter.swapCursor(data);
     }
 
@@ -198,4 +194,23 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     public void onLoaderReset(Loader<Cursor> loader) {
         movieAdapter.swapCursor(null);
     }
+
+
+    /**
+     * If we do not have data to work with, manually fetch the api instead of waiting for
+     * the Firebase job to be dispatched
+     */
+    public void forceUpdate() {
+
+        for (String sortValue : movieSortByValues) {
+
+            if (sortValue.equals(getString(R.string.favorites_sort_value))) continue;
+
+            MovieTask movieTask = new MovieTask(this);
+            movieTask.execute(sortValue);
+
+        }
+
+    }
+
 }

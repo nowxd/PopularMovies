@@ -69,6 +69,7 @@ public class MovieDetailActivity extends AppCompatActivity
 
             this.movieID = getIntent().getLongExtra(getString(R.string.movie_id_intent_key), 0);
 
+            setupRecyclerViews();
             getSupportLoaderManager().initLoader(MOVIE_LOADER_ID, null, this);
 
         }
@@ -101,7 +102,6 @@ public class MovieDetailActivity extends AppCompatActivity
         if (movieCursor != null && movieCursor.moveToFirst()) {
 
             setupViews(movieCursor);
-            setupRecyclerViews();
             setupLoaders(movieCursor);
 
         }
@@ -174,7 +174,6 @@ public class MovieDetailActivity extends AppCompatActivity
                     );
 
                     Log.d(TAG, "onClick: Removed from favorites");
-
                     toastMessage = "Removed from favorites";
                     
                 } else {
@@ -185,7 +184,6 @@ public class MovieDetailActivity extends AppCompatActivity
                     );
 
                     Log.d(TAG, "onClick: Added to favorites");
-
                     toastMessage = "Added to favorites";
                     
                 }

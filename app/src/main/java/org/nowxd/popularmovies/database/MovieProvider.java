@@ -88,7 +88,7 @@ public class MovieProvider extends ContentProvider {
     }
 
     @Override
-    public Cursor query(@NonNull Uri uri, String[] projection, String where, String[] whereArgs, String sortBy) {
+    public Cursor query(@NonNull Uri uri, String[] projection, String where, String[] whereArgs, String orderBy) {
 
         final SQLiteDatabase db = dbHelper.getReadableDatabase();
         int match = uriMatcher.match(uri);
@@ -138,7 +138,7 @@ public class MovieProvider extends ContentProvider {
 
         }
 
-        Cursor returnCursor = db.query(table, projection, where, whereArgs, null, null, sortBy);
+        Cursor returnCursor = db.query(table, projection, where, whereArgs, null, null, orderBy);
 
         if (getContext() != null) {
             returnCursor.setNotificationUri(getContext().getContentResolver(), uri);

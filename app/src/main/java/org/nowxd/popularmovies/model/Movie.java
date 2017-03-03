@@ -41,7 +41,7 @@ public class Movie implements Parcelable {
 
             apiId = jsonObject.getString(API_ID_KEY);
             title = jsonObject.getString(TITLE_KEY);
-            posterImageUrl = "http://image.tmdb.org/t/p/w185" + jsonObject.getString(POSTER_KEY);
+            posterImageUrl = "http://image.tmdb.org/t/p/w342" + jsonObject.getString(POSTER_KEY);
             plotSynopsis = jsonObject.getString(PLOT_KEY);
             releaseDate = jsonObject.getString(RELEASE_DATE_KEY);
             userRating = jsonObject.getDouble(USER_RATING_KEY);
