@@ -28,5 +28,11 @@
     <string name="user_rating">User Rating: %1$.1f / 10</string>
     <string name="release_date">Release Date: %1$s</string>
     <string name="movie_plot">Plot:\n%1$s</string>
+    <string name="add_to_favorites">Add to Favorites: </string>
+
+    <string name="trailers">Trailers:</string>
+    <string name="reviews">Reviews:</string>
+
+    <string name="review_author">%1$s:</string>
 
 </resources>

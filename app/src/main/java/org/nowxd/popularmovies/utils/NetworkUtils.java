@@ -14,12 +14,18 @@ public class NetworkUtils {
 
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
+    // Movie Api Fields
     private static final String BASE_URL = "https://api.themoviedb.org/3/movie/";
 
     private static final String VIDEO_PATH = "videos";
     private static final String REVIEW_PATH = "reviews";
 
     private static final String QUERY_API_KEY = "api_key";
+
+    // Youtube Fields
+    private static final String YOUTUBE_BASE_URL = "https://www.youtube.com/";
+    private static final String YOUTUBE_VIDEO_PATH = "watch";
+    private static final String YOUTUBE_QUERY_VIDEO_KEY = "v";
 
     /**
      * Request the list of movies by their sort order (popular or top_rated)
@@ -116,6 +122,21 @@ public class NetworkUtils {
         }
 
         return responseBody;
+
+    }
+
+    /**
+     * Youtube
+     */
+    public static Uri buildYoutubeUri(String videoKey) {
+
+        Uri uri = Uri.parse(YOUTUBE_BASE_URL)
+                .buildUpon()
+                .appendPath(YOUTUBE_VIDEO_PATH)
+                .appendQueryParameter(YOUTUBE_QUERY_VIDEO_KEY, videoKey)
+                .build();
+
+        return uri;
 
     }
 

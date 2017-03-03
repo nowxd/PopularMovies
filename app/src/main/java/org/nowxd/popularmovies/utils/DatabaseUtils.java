@@ -15,11 +15,10 @@ public class DatabaseUtils {
     private static String TAG = DatabaseUtils.class.getSimpleName();
 
     /**
-     * Deletes previous movie entries and adds the new movies in the array to the database.
+     * Adds the new movies in the array to the database.
      */
     public synchronized static void updateMovieDatabase(Context context, Movie[] movies, String sortType) {
 
-        // Add each movie to the db
         for (Movie movie : movies) {
 
             ContentValues contentValues =  movie.toContentValues();
@@ -27,6 +26,8 @@ public class DatabaseUtils {
             Uri uri = context.getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues);
 
             long id = ContentUris.parseId(uri);
+
+            if (id == -1) continue;
 
             // Add to respective sort type tables as well
             if (sortType.equals(MovieContract.TopRatedEntry.TABLE_NAME)) {
@@ -68,6 +69,9 @@ public class DatabaseUtils {
 
     }
 
+    /**
+     * Add the movie id to the favorites table
+     */
     public static void addToFavorites(Context context, long movieId) {
 
         ContentValues contentValues = new ContentValues();
@@ -78,6 +82,9 @@ public class DatabaseUtils {
 
     }
 
+    /**
+     * Remove the movie id from the favorites table
+     */
     public static void removeFromFavorites(Context context, long movieId) {
 
         String whereClause = MovieContract.FavoriteEntry.COLUMN_MOVIE_ID + "=?";

@@ -11,10 +11,11 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
-    <RelativeLayout
+    <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
         android:id="@+id/cl_movie_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,20 +28,35 @@
             android:layout_height="wrap_content"
             android:text="@string/title_placeholder"
             android:textSize="@dimen/movie_title_text_size"
-            android:layout_margin="@dimen/detail_item_margin"/>
+            android:layout_marginLeft="@dimen/detail_item_margin"
+            android:layout_marginStart="@dimen/detail_item_margin"
+            />
 
-        <!--Add To Favorites Button-->
-        <ImageView
-            android:id="@+id/iv_add_to_favorites"
-            android:layout_height="50dp"
-            android:contentDescription="@null"
-            app:srcCompat="@drawable/add_to_favorites"
-            android:layout_toRightOf="@id/tv_detail_movie_title"
-            android:layout_toEndOf="@id/tv_detail_movie_title"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_width="50dp"
-            android:layout_margin="@dimen/detail_item_margin"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="@dimen/detail_item_margin"
+            android:layout_marginStart="@dimen/detail_item_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:text="@string/add_to_favorites"
+                android:layout_gravity="center_vertical" />
+
+            <!--Add To Favorites Button-->
+            <ImageView
+                android:id="@+id/iv_add_to_favorites"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="@dimen/detail_item_margin"
+                android:contentDescription="@null"
+                android:src="@drawable/add_to_favorites" />
+
+        </LinearLayout>
 
         <!-- Movie Poster -->
         <ImageView
@@ -49,7 +65,6 @@
             android:layout_height="@dimen/movie_poster_detail_height"
             android:contentDescription="@null"
             app:srcCompat="@mipmap/ic_launcher"
-            android:layout_below="@id/tv_detail_movie_title"
             android:layout_margin="@dimen/detail_item_margin"/>
 
         <!--User Rating-->
@@ -59,23 +74,8 @@
             android:textSize="@dimen/movie_detail_text_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/iv_detail_movie_poster"
             android:layout_margin="@dimen/detail_item_margin"
             />
-
-        <!--Rating Star-->
-        <!--<ImageView-->
-            <!--android:id="@+id/iv_rating_star"-->
-            <!--android:layout_width="25dp"-->
-            <!--android:layout_height="25dp"-->
-            <!--app:srcCompat="@drawable/rating_star"-->
-            <!--android:layout_toRightOf="@id/tv_user_rating"-->
-            <!--android:layout_toEndOf="@id/tv_user_rating"-->
-            <!--android:layout_alignParentRight="true"-->
-            <!--android:layout_alignParentEnd="true"-->
-            <!--android:layout_alignRight="@id/tv_user_rating"-->
-            <!--android:layout_alignEnd="@id/tv_user_rating"-->
-            <!--android:layout_below="@id/iv_detail_movie_poster"/>-->
 
         <TextView
             android:id="@+id/tv_release_date"
@@ -83,7 +83,6 @@
             android:textSize="@dimen/movie_detail_text_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_user_rating"
             android:layout_margin="@dimen/detail_item_margin"
             />
 
@@ -93,27 +92,40 @@
             android:textSize="@dimen/movie_detail_text_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_release_date"
             android:layout_margin="@dimen/detail_item_margin"
+            android:paddingRight="4dp"
+            android:paddingEnd="4dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:text="@string/trailers"
             />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_trailer_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_movie_plot"
             android:layout_margin="@dimen/detail_item_margin"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:text="@string/reviews"
             />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_review_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/rv_trailer_list"
             android:layout_margin="@dimen/detail_item_margin"
             />
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </ScrollView>
 

@@ -29,7 +29,7 @@ public class Review {
         try {
 
             this.author = jsonObject.getString(AUTHOR_KEY);
-            this.content = truncate(jsonObject.getString(CONTENT_KEY));
+            this.content = jsonObject.getString(CONTENT_KEY);
             this.url = jsonObject.getString(URL_KEY);
 
         } catch (JSONException e) {

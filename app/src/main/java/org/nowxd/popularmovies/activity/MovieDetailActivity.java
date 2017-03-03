@@ -2,6 +2,7 @@ package org.nowxd.popularmovies.activity;
 
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -28,9 +29,10 @@ import org.nowxd.popularmovies.model.Trailer;
 import org.nowxd.popularmovies.network.ReviewTaskLoader;
 import org.nowxd.popularmovies.network.TrailerTaskLoader;
 import org.nowxd.popularmovies.utils.DatabaseUtils;
+import org.nowxd.popularmovies.utils.NetworkUtils;
 
 public class MovieDetailActivity extends AppCompatActivity
-        implements LoaderManager.LoaderCallbacks<Cursor> {
+        implements LoaderManager.LoaderCallbacks<Cursor>, TrailerAdapter.TrailerOnClickListener {
 
     private static final String TAG = MovieDetailActivity.class.getSimpleName();
 
@@ -206,7 +208,7 @@ public class MovieDetailActivity extends AppCompatActivity
         RecyclerView.LayoutManager trailerLayoutManager = new LinearLayoutManager(this);
         trailerRecyclerView.setLayoutManager(trailerLayoutManager);
 
-        trailerAdapter = new TrailerAdapter();
+        trailerAdapter = new TrailerAdapter(this);
         trailerRecyclerView.setAdapter(trailerAdapter);
 
         // Reviews
@@ -283,4 +285,11 @@ public class MovieDetailActivity extends AppCompatActivity
 
     }
 
+    /**
+     * On Trailer click, open the youtube video link
+     */
+    @Override
+    public void onTrailerClick(Trailer trailer) {
+        startActivity(new Intent(Intent.ACTION_VIEW, NetworkUtils.buildYoutubeUri(trailer.getVideoKey())));
+    }
 }
