@@ -9,6 +9,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,9 +24,17 @@ public class ContentProviderTest {
 
     @Before
     public void setup() {
+        deleteMovieDatabase();
+    }
+
+    @After
+    public void cleanUp() {
+        deleteMovieDatabase();
+    }
+
+    public void deleteMovieDatabase() {
         context = InstrumentationRegistry.getTargetContext();
-        // Wipe the table
-        context.getContentResolver().delete(MovieContract.MovieEntry.CONTENT_URI, null, null);
+        context.deleteDatabase("movie.db");
     }
 
     @Test

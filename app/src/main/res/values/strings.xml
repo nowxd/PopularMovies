@@ -11,6 +11,7 @@
     <string name="popular_sort_value" translatable="false">popular</string>
     <string name="favorites_sort_value" translatable="false">favorites</string>
 
+    <!--Spinner Display Keys and Values-->
     <string-array name="spinner_text_display_array">
         <item>Popular</item>
         <item>Top Rated</item>
@@ -33,6 +34,5 @@
     <string name="trailers">Trailers:</string>
     <string name="reviews">Reviews:</string>
 
-    <string name="review_author">%1$s:</string>
-
+    <string name="review_author">%1$s: </string>
 </resources>

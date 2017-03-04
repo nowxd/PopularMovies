@@ -40,20 +40,6 @@ public class MovieDetailActivity extends AppCompatActivity
 
     private static final String TAG = MovieDetailActivity.class.getSimpleName();
 
-//    private TextView movieTitleTextView;
-//    private ImageView moviePosterImageView;
-//    private TextView movieRatingTextView;
-//    private TextView movieReleaseDateTextView;
-//    private TextView moviePlotTextView;
-//    private ImageView addToFavoritesImageView;
-
-//    movieTitleTextView = (TextView) findViewById(R.id.tv_detail_movie_title);
-//    moviePosterImageView = (ImageView) findViewById(R.id.iv_detail_movie_poster);
-//    movieRatingTextView = (TextView) findViewById(R.id.tv_user_rating);
-//    movieReleaseDateTextView = (TextView) findViewById(R.id.tv_release_date);
-//    moviePlotTextView = (TextView) findViewById(R.id.tv_movie_plot);
-//    addToFavoritesImageView = (ImageView) findViewById(R.id.iv_add_to_favorites);
-
     @BindView(R.id.tv_detail_movie_title) TextView movieTitleTextView;
     @BindView(R.id.iv_detail_movie_poster) ImageView moviePosterImageView;
     @BindView(R.id.tv_user_rating) TextView movieRatingTextView;
