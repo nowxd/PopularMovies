@@ -39,13 +39,13 @@ public class Movie implements Parcelable {
 
         try {
 
-            apiId = jsonObject.getString(API_ID_KEY);
-            title = jsonObject.getString(TITLE_KEY);
-            posterImageUrl = "http://image.tmdb.org/t/p/w342" + jsonObject.getString(POSTER_KEY);
-            plotSynopsis = jsonObject.getString(PLOT_KEY);
-            releaseDate = jsonObject.getString(RELEASE_DATE_KEY);
-            userRating = jsonObject.getDouble(USER_RATING_KEY);
-            popularity = jsonObject.getDouble(POPULARITY_KEY);
+            this.apiId = jsonObject.getString(API_ID_KEY);
+            this.title = jsonObject.getString(TITLE_KEY);
+            this.posterImageUrl = "http://image.tmdb.org/t/p/w342" + jsonObject.getString(POSTER_KEY);
+            this.plotSynopsis = jsonObject.getString(PLOT_KEY);
+            this.releaseDate = jsonObject.getString(RELEASE_DATE_KEY);
+            this.userRating = jsonObject.getDouble(USER_RATING_KEY);
+            this.popularity = jsonObject.getDouble(POPULARITY_KEY);
 
         } catch (JSONException e) {
             e.printStackTrace();

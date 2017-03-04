@@ -15,12 +15,12 @@ public class NetworkUtils {
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
     // Movie Api Fields
-    private static final String BASE_URL = "https://api.themoviedb.org/3/movie/";
+    private static final String MOVIE_BASE_URL = "https://api.themoviedb.org/3/movie/";
 
-    private static final String VIDEO_PATH = "videos";
-    private static final String REVIEW_PATH = "reviews";
+    private static final String MOVIE_VIDEO_PATH = "videos";
+    private static final String MOVIE_REVIEW_PATH = "reviews";
 
-    private static final String QUERY_API_KEY = "api_key";
+    private static final String MOVIE_QUERY_API_KEY = "api_key";
 
     // Youtube Fields
     private static final String YOUTUBE_BASE_URL = "https://www.youtube.com/";
@@ -36,10 +36,10 @@ public class NetworkUtils {
 
     private static URL buildMovieUrl(String sortOrder, String apiKey) {
 
-        Uri uri = Uri.parse(BASE_URL)
+        Uri uri = Uri.parse(MOVIE_BASE_URL)
                 .buildUpon()
                 .appendPath(sortOrder)
-                .appendQueryParameter(QUERY_API_KEY, apiKey)
+                .appendQueryParameter(MOVIE_QUERY_API_KEY, apiKey)
                 .build();
 
         return buildUrl(uri);
@@ -55,11 +55,11 @@ public class NetworkUtils {
 
     private static URL buildTrailerUrl(String movieApiId, String apiKey) {
 
-        Uri uri = Uri.parse(BASE_URL)
+        Uri uri = Uri.parse(MOVIE_BASE_URL)
                 .buildUpon()
                 .appendPath(movieApiId)
-                .appendPath(VIDEO_PATH)
-                .appendQueryParameter(QUERY_API_KEY, apiKey)
+                .appendPath(MOVIE_VIDEO_PATH)
+                .appendQueryParameter(MOVIE_QUERY_API_KEY, apiKey)
                 .build();
 
         return buildUrl(uri);
@@ -75,11 +75,11 @@ public class NetworkUtils {
 
     private static URL buildReviewUrl(String movieApiId, String apiKey) {
 
-        Uri uri = Uri.parse(BASE_URL)
+        Uri uri = Uri.parse(MOVIE_BASE_URL)
                 .buildUpon()
                 .appendPath(movieApiId)
-                .appendPath(REVIEW_PATH)
-                .appendQueryParameter(QUERY_API_KEY, apiKey)
+                .appendPath(MOVIE_REVIEW_PATH)
+                .appendQueryParameter(MOVIE_QUERY_API_KEY, apiKey)
                 .build();
 
         return buildUrl(uri);
@@ -126,7 +126,7 @@ public class NetworkUtils {
     }
 
     /**
-     * Youtube
+     * Build the Youtube Uri with the video key
      */
     public static Uri buildYoutubeUri(String videoKey) {
 

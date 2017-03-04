@@ -41,6 +41,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     private SharedPreferences preferences;
 
+    // Limit the number of popular and top rated movies shown to 20
+    private static final int MOVIE_LIMIT = 20;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,8 +86,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         recyclerView.setHasFixedSize(true);
 
         RecyclerView.LayoutManager layoutManager = new MoviePosterGridLayoutManager(this,
-                getResources().getDimension(R.dimen.movie_poster_width),
-                getResources().getDimension(R.dimen.movie_poster_height));
+                getResources().getDimension(R.dimen.movie_poster_width));
 
         recyclerView.setLayoutManager(layoutManager);
 
@@ -181,12 +183,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         if (sortType.equals(getString(R.string.top_rated_sort_value))) {
 
             uri = MovieContract.TopRatedEntry.CONTENT_URI;
-            orderBy = MovieContract.MovieEntry.COLUMN_USER_RATING + " DESC";
+            orderBy = MovieContract.MovieEntry.COLUMN_USER_RATING + " DESC LIMIT " + MOVIE_LIMIT;
 
         } else if (sortType.equals(getString(R.string.popular_sort_value))) {
 
             uri = MovieContract.PopularEntry.CONTENT_URI;
-            orderBy = MovieContract.MovieEntry.COLUMN_POPULARITY + " DESC";
+            orderBy = MovieContract.MovieEntry.COLUMN_POPULARITY + " DESC LIMIT " + MOVIE_LIMIT;
 
         } else if (sortType.equals(getString(R.string.favorites_sort_value))) {
 
@@ -202,12 +204,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
         // Manually fetch data if we don't have data to work with
-        if (!movieCategories[selectionIndex].equals(getString(R.string.favorites_sort_value)) &&
-                data.getCount() == 0) {
-            forceUpdate();
+        if (data.getCount() == 0 && !movieCategories[selectionIndex].equals(getString(R.string.favorites_sort_value))) {
+            manuallyFetchMovies(movieCategories[selectionIndex]);
         }
 
         movieAdapter.swapCursor(data);
+
     }
 
     @Override
@@ -215,22 +217,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         movieAdapter.swapCursor(null);
     }
 
-
     /**
      * If we do not have data to work with, manually fetch the api instead of waiting for
      * the Firebase job to be dispatched
      */
-    public void forceUpdate() {
-
-        for (String sortValue : movieCategories) {
-
-            if (sortValue.equals(getString(R.string.favorites_sort_value))) continue;
-
-            MovieTask movieTask = new MovieTask(this);
-            movieTask.execute(sortValue);
-
-        }
-
+    public void manuallyFetchMovies(String sortValue) {
+        MovieTask movieTask = new MovieTask(this);
+        movieTask.execute(sortValue);
     }
 
 }

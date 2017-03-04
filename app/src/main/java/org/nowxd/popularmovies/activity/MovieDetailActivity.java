@@ -1,9 +1,9 @@
 package org.nowxd.popularmovies.activity;
 
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -31,17 +31,38 @@ import org.nowxd.popularmovies.network.TrailerTaskLoader;
 import org.nowxd.popularmovies.utils.DatabaseUtils;
 import org.nowxd.popularmovies.utils.NetworkUtils;
 
+import butterknife.BindDrawable;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MovieDetailActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor>, TrailerAdapter.TrailerOnClickListener {
 
     private static final String TAG = MovieDetailActivity.class.getSimpleName();
 
-    private TextView movieTitleTextView;
-    private ImageView moviePosterImageView;
-    private TextView movieRatingTextView;
-    private TextView movieReleaseDateTextView;
-    private TextView moviePlotTextView;
-    private ImageView addToFavoritesImageView;
+//    private TextView movieTitleTextView;
+//    private ImageView moviePosterImageView;
+//    private TextView movieRatingTextView;
+//    private TextView movieReleaseDateTextView;
+//    private TextView moviePlotTextView;
+//    private ImageView addToFavoritesImageView;
+
+//    movieTitleTextView = (TextView) findViewById(R.id.tv_detail_movie_title);
+//    moviePosterImageView = (ImageView) findViewById(R.id.iv_detail_movie_poster);
+//    movieRatingTextView = (TextView) findViewById(R.id.tv_user_rating);
+//    movieReleaseDateTextView = (TextView) findViewById(R.id.tv_release_date);
+//    moviePlotTextView = (TextView) findViewById(R.id.tv_movie_plot);
+//    addToFavoritesImageView = (ImageView) findViewById(R.id.iv_add_to_favorites);
+
+    @BindView(R.id.tv_detail_movie_title) TextView movieTitleTextView;
+    @BindView(R.id.iv_detail_movie_poster) ImageView moviePosterImageView;
+    @BindView(R.id.tv_user_rating) TextView movieRatingTextView;
+    @BindView(R.id.tv_release_date) TextView movieReleaseDateTextView;
+    @BindView(R.id.tv_movie_plot) TextView moviePlotTextView;
+    @BindView(R.id.iv_add_to_favorites) ImageView addToFavoritesImageView;
+
+    @BindDrawable(R.drawable.add_to_favorites) Drawable addToFavUnmarked;
+    @BindDrawable(R.drawable.add_to_favorites_filled) Drawable addToFavMarked;
 
     private long movieID;
     private boolean favorited;
@@ -60,12 +81,7 @@ public class MovieDetailActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
 
-        movieTitleTextView = (TextView) findViewById(R.id.tv_detail_movie_title);
-        moviePosterImageView = (ImageView) findViewById(R.id.iv_detail_movie_poster);
-        movieRatingTextView = (TextView) findViewById(R.id.tv_user_rating);
-        movieReleaseDateTextView = (TextView) findViewById(R.id.tv_release_date);
-        moviePlotTextView = (TextView) findViewById(R.id.tv_movie_plot);
-        addToFavoritesImageView = (ImageView) findViewById(R.id.iv_add_to_favorites);
+        ButterKnife.bind(this);
 
         if (getIntent().hasExtra(getString(R.string.movie_id_intent_key))) {
 
@@ -126,6 +142,7 @@ public class MovieDetailActivity extends AppCompatActivity
 
         Picasso.with(getApplicationContext())
                 .load(movieCursor.getString(imgIndex))
+//                .placeholder(R.drawable.placeholder_image_large)
                 .fit()
                 .into(moviePosterImageView);
 
@@ -153,11 +170,9 @@ public class MovieDetailActivity extends AppCompatActivity
         favorited = DatabaseUtils.checkIfFavorited(this, movieID);
 
         if (favorited) {
-            addToFavoritesImageView.setImageDrawable(ResourcesCompat.getDrawable(
-                    getResources(), R.drawable.add_to_favorites_filled, null));
+            addToFavoritesImageView.setImageDrawable(addToFavMarked);
         } else {
-            addToFavoritesImageView.setImageDrawable(ResourcesCompat.getDrawable(
-                    getResources(), R.drawable.add_to_favorites, null));
+            addToFavoritesImageView.setImageDrawable(addToFavUnmarked);
         }
 
         final Context context = this;
@@ -171,22 +186,18 @@ public class MovieDetailActivity extends AppCompatActivity
                 if (favorited) {
                     
                     DatabaseUtils.removeFromFavorites(getApplicationContext(), movieID);
-                    addToFavoritesImageView.setImageDrawable(
-                            ResourcesCompat.getDrawable(getResources(), R.drawable.add_to_favorites, null)
-                    );
+                    addToFavoritesImageView.setImageDrawable(addToFavUnmarked);
 
                     Log.d(TAG, "onClick: Removed from favorites");
-                    toastMessage = "Removed from favorites";
+                    toastMessage = "Removed from Favorites";
                     
                 } else {
 
                     DatabaseUtils.addToFavorites(getApplicationContext(), movieID);
-                    addToFavoritesImageView.setImageDrawable(
-                            ResourcesCompat.getDrawable(getResources(), R.drawable.add_to_favorites_filled, null)
-                    );
+                    addToFavoritesImageView.setImageDrawable(addToFavMarked);
 
                     Log.d(TAG, "onClick: Added to favorites");
-                    toastMessage = "Added to favorites";
+                    toastMessage = "Added to Favorites";
                     
                 }
 

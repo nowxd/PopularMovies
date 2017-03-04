@@ -14,6 +14,9 @@ import com.squareup.picasso.Picasso;
 import org.nowxd.popularmovies.R;
 import org.nowxd.popularmovies.database.MovieContract;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder>{
 
     private final String TAG = MovieAdapter.class.getSimpleName();
@@ -73,11 +76,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     */
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        private ImageView posterImageView;
+        @BindView(R.id.iv_movie_poster) ImageView posterImageView;
 
         MovieViewHolder(View itemView) {
             super(itemView);
-            posterImageView = (ImageView) itemView.findViewById(R.id.iv_movie_poster);
+            ButterKnife.bind(this, itemView);
             posterImageView.setOnClickListener(this);
         }
 
@@ -85,6 +88,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
             Picasso.with(context)
                     .load(posterUrl)
+//                    .placeholder(R.drawable.placeholder_image)
                     .fit()
                     .into(posterImageView);
 

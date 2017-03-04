@@ -18,6 +18,7 @@ public class ApiCallTest {
     private static final String MOVIE_API_ID = "278";
 
     // Values that i'm expecting at the time i'm testing this
+    // May not be valid in the future
     private static final int EXPECTED_TRAILER_RESULTS = 3;
     private static final int EXPECTED_REVIEW_RESULTS = 2;
 

@@ -22,6 +22,7 @@ public class Review {
     private static final String CONTENT_KEY = "content";
     private static final String URL_KEY = "url";
 
+    // Never mind, will show the full review for now
     private static final int MAX_CONTENT_LEN = 300;
 
     public Review(JSONObject jsonObject) {
@@ -29,7 +30,6 @@ public class Review {
         try {
 
             this.author = jsonObject.getString(AUTHOR_KEY);
-            // Showing the full content for now
             this.content = jsonObject.getString(CONTENT_KEY);
             this.url = jsonObject.getString(URL_KEY);
 

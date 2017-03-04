@@ -8,7 +8,9 @@ import android.widget.TextView;
 
 import org.nowxd.popularmovies.R;
 import org.nowxd.popularmovies.model.Review;
-import org.w3c.dom.Text;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder> {
 
@@ -42,13 +44,12 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
 
     class ReviewViewHolder extends RecyclerView.ViewHolder {
 
-        TextView reviewAuthorTextView;
-        TextView reviewContentTextView;
+        @BindView(R.id.tv_review_author) TextView reviewAuthorTextView;
+        @BindView(R.id.tv_review_content) TextView reviewContentTextView;
 
         ReviewViewHolder(View itemView) {
             super(itemView);
-            reviewAuthorTextView = (TextView) itemView.findViewById(R.id.tv_review_author);
-            reviewContentTextView = (TextView) itemView.findViewById(R.id.tv_review_content);
+            ButterKnife.bind(this, itemView);
         }
 
         void bindView(Review review) {

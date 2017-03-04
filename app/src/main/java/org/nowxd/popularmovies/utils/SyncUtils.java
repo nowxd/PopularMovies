@@ -18,11 +18,17 @@ public class SyncUtils {
 
     private static final String JOB_TAG = "movies_api_call";
 
+    private static final int DELTA_WINDOW_MINUTES = 60;
+
     private static final int START_WINDOW_SECONDS = 0;
-    private static final int DELTA_WINDOW_SECONDS = 120;
+    private static final int DELTA_WINDOW_SECONDS = DELTA_WINDOW_MINUTES * 60;
     private static final int END_WINDOW_SECONDS = START_WINDOW_SECONDS + DELTA_WINDOW_SECONDS;
 
+    private static boolean initialized;
+
     public synchronized static void scheduleMovieSyncJob(Context context) {
+
+        if (initialized) return;
 
         FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
 
@@ -38,6 +44,8 @@ public class SyncUtils {
                 .build();
 
         dispatcher.mustSchedule(syncMoviesJob);
+
+        initialized = true;
 
     }
 
