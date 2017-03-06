@@ -10,6 +10,9 @@ import android.widget.TextView;
 import org.nowxd.popularmovies.R;
 import org.nowxd.popularmovies.model.Trailer;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerViewHolder> {
 
     private static final String TAG = TrailerAdapter.class.getSimpleName();
@@ -54,11 +57,11 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
 
     class TrailerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView trailerNameTextView;
+        @BindView(R.id.tv_trailer_name) TextView trailerNameTextView;
 
         TrailerViewHolder(View itemView) {
             super(itemView);
-            trailerNameTextView = (TextView) itemView.findViewById(R.id.tv_trailer_name);
+            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
 

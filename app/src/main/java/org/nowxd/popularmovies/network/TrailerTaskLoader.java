@@ -1,14 +1,14 @@
 package org.nowxd.popularmovies.network;
 
-import android.content.AsyncTaskLoader;
 import android.content.Context;
+import android.support.v4.content.AsyncTaskLoader;
 
 import org.nowxd.popularmovies.BuildConfig;
 import org.nowxd.popularmovies.model.Trailer;
 import org.nowxd.popularmovies.utils.JsonUtils;
 import org.nowxd.popularmovies.utils.NetworkUtils;
 
-public class TrailerTaskLoader extends android.support.v4.content.AsyncTaskLoader<Trailer[]> {
+public class TrailerTaskLoader extends AsyncTaskLoader<Trailer[]> {
 
     private String movieId;
 

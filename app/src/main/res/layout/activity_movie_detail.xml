@@ -97,8 +97,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/detail_item_margin"
             />
-        <!--android:paddingRight="@dimen/movie_plot_right_padding"-->
-        <!--android:paddingEnd="@dimen/movie_plot_right_padding"-->
 
         <TextView
             android:layout_width="wrap_content"
